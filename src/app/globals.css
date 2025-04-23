@@ -44,8 +44,7 @@
 }
 
 body {
-  padding: 20px;
-  min-height: 100vh;
+  height: 100%;
   margin: 0;
   background: radial-gradient(
     circle at top right,
@@ -53,6 +52,11 @@ body {
     #000000 40%,
     #000000 100%
   );
+}
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 :root {
