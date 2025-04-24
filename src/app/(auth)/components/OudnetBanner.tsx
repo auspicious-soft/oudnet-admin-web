@@ -9,8 +9,7 @@ export const OudnetBanner = () => {
           alt="Login Image"
           width={690}
           height={984}
-          // fill 
-          className="w-[100%] h-full object-contain  rounded-3xl"
+          className="w-[100%]  h-full object-cover  rounded-3xl object-bottom"
         />
        
     </>
