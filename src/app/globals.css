@@ -44,15 +44,10 @@
 }
 
 body {
+  background: radial-gradient(circle at 102% 0, #eec584b3 -42%, #000 25% 65%);
   height: 100%;
   margin: 0;
-  background: radial-gradient(
-    circle at top right,
-    rgba(238, 197, 132, 0.7) 0%,  /* Yellow with 70% opacity */
-    #000000 40%,
-    #000000 100%
-  );
-}
+}  
 
 * {
   box-sizing: border-box;
@@ -134,5 +129,65 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.input_color {
+  background-color: #212121;
+  color: #797A7C; 
+  padding: 13px 20px;
+  border-radius: 8px;
+}
+
+@font-face {
+  font-family: 'OutrequeRegular';
+  src: url('../../public/fonts/OutrequeRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NewYorkRegular';
+  src: url('../../public/fonts/NewYork.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-outreque-regular: 'OutrequeRegular', sans-serif;
+  --font-aeonik-regular: 'NewYorkRegular', sans-serif;
+}
+
+body {
+  font-family: var(--font-outreque-regular), sans-serif;
+}
+
+.font-newyork {
+  font-family: var(--font-newyork-regular), sans-serif;
+}
+
+@layer base {
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }

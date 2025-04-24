@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
+// import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+// import { AppSidebar } from "./admin/components/app-side-bar/AppSideBar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+
+const OutrequeRegular = localFont({
+  src: "../../public/fonts/OutrequeRegular.ttf",
+  display: "swap",
+  variable: "--font-outreque-regular",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const NewYorkRegular = localFont({
+  src: "../../public/fonts/NewYork.otf",
+  display: "swap",
+  variable: "--font-newyork-regular",
 });
 
 export const metadata: Metadata = {
@@ -22,13 +26,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${OutrequeRegular.variable} ${NewYorkRegular.variable} antialiased`}>
         {children}
       </body>
     </html>
   );
+
+
+
+
+  
 }
+// export function Layout({ children }: { children: React.ReactNode }) {
+//   return (
+//     <SidebarProvider>
+//       <AppSidebar />
+//       <main>
+//         <SidebarTrigger />
+//         {children}
+//       </main>
+//     </SidebarProvider>
+//   )
+// }
+

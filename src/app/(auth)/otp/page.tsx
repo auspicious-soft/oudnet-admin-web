@@ -1,8 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   InputOTP,
@@ -13,39 +12,50 @@ import AuthLayout from "../components/AuthLayout";
 
 const Page = () => {
   const router = useRouter();
-  const [mobile, setMobile] = useState("");
+  const [otp, setOtp] = useState(""); 
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Mobile Number Submitted:", mobile);
-
-    if (!mobile) {
-      toast.error("Please enter mobile number");
+  const handleVerify = () => {
+    if (otp.length < 5) {
+      toast.error("Please enter the complete OTP");
       return;
     }
 
-    console.log("Mobile Number:", mobile);
-    toast.success("Form submitted!");
+    
+      console.log("OTP is:", otp);
+      toast.success("OTP verified!");
+    
+      setTimeout(() => {
+        router.push("/reset-password");
+      }, 1000); 
+    
+      setOtp("");
 
-    setMobile("");
   };
 
   return (
     <AuthLayout>
-      <div
-        className="mt-[50px] text-[#FFFFFF] text-4xl font-normal "
-        style={{ fontFamily: "Jost, sans-serif" }}
-      >
-        {" "}
-        Enter OTP!{" "}
-      </div>
-      <div className="mt-[20px] text-center justify-start text-[#ABABAB] text-base font-normal ">
-        Please enter the OTP sent on your registered mobile number.
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
+      <div className="flex flex-col items-center text-center">
+        <div className="mt-[50px] text-[#FFFFFF] text-3xl lg:text-4xl font-normal font-newyork">
+          Enter OTP!
+        </div>
+        <div className="mt-[20px] text-center justify-start text-[#ABABAB] text-sm md:text-base font-normal">
+          Please enter the OTP sent on your registered mobile number.
+        </div>
       </div>
 
-      {/* form  */}
-
-      <InputOTP maxLength={5}>
+      <InputOTP maxLength={5} value={otp} onChange={setOtp}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -55,26 +65,18 @@ const Page = () => {
         </InputOTPGroup>
       </InputOTP>
 
-      <div className="relative mt-[20px] w-full min-h-[60px]">
-        <button
-          onClick={(e) => {
-            handleSubmit(e);
-            router.push("/reset-password");
-          }}
-          type="submit"
-          className="w-full rounded-lg absolute right-0 left-0 top-1/2 -translate-y-1/2 px-[94px] py-[18px] md:py-4 bg-[#EEC584] hover:bg-[#EEC584] text-[#07151F] text-sm 2xl:text-xl xl:text-lg md:text-md  font-semibold cursor-pointer"
-          style={{ fontFamily: "Jost, sans-serif" }}
-        >
-          Verify
-        </button>
-      </div>
+      <button
+        onClick={handleVerify}
+        type="button"
+        className="mt-[20px] w-full rounded-lg px-[20px] py-[13px] bg-[#EEC584] hover:bg-[#EEC584] text-[#07151F] text-md font-medium cursor-pointer"
+      >
+        Verify
+      </button>
 
-      <div className="mt-[50px] self-stretch text-center justify-start">
-        <span className="text-[#797A7C] text-sm font-normal ">
-          Remember Password? Try{" "}
-        </span>
+      <div className="mt-[50px] self-stretch text-center justify-start text-sm font-normal">
+        <span className="text-[#797A7C]">Remember Password? Try </span>
         <span
-          className="text-[#266EFF] text-sm font-normal  underline cursor-pointer"
+          className="text-[#266EFF] underline cursor-pointer"
           onClick={() => {
             router.push("/");
           }}
@@ -85,4 +87,5 @@ const Page = () => {
     </AuthLayout>
   );
 };
+
 export default Page;
