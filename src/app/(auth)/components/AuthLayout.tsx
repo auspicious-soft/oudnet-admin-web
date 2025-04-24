@@ -20,7 +20,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   <OudnetBanner />
 </div>
 
-
+ 
     {/* <div className=" w-full lg:w-[50%] 2xl:w-[50%] flex justify-center items-center ">
             <div className="flex flex-col items-center text-center w-[90%] px-10">
               <Logo />
