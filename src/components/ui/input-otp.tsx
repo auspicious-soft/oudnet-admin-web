@@ -74,10 +74,10 @@ function InputOTPSlot({
       data-active={isActive}
       className={cn(
         "mt-[40px] flex items-center justify-center text-[#797A7C] font-semibold text-lg rounded-lg bg-[#212121] py-[18px] px-[20px] mx-1",
-        "w-[60px] h-[60px]",
+        "lg:w-[60px] lg:h-[60px] w-[50px] h-[50px] ",
         "border border-transparent data-[active=true]:border-white",
         "aria-invalid:border-red-500 data-[active=true]:aria-invalid:border-red-500",
-        "transition-[border-color] duration-200",
+        "transition-[border-color] duration-200 ",
         className
       )}
       {...props}
