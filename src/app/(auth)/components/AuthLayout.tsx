@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
      <OudnetBanner />
     </div> */}
 
-<div className="hidden lg:flex w-full lg:w-1/2 h-full  relative p-5">
+<div className="hidden lg:block   w-full lg:w-1/2 h-full  relative p-5">
   <OudnetBanner />
 </div>
 
