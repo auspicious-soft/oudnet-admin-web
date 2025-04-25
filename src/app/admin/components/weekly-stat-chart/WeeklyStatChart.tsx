@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import Image from "next/image";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -15,21 +15,21 @@ const yAxisTickFormatter = (value: number) => {
 };
 
 const WeeklyStatChart = ({  }: Props) => {
- const [chartData] = useState<{ name: string; listed: number; sold: number }[]>([]);
+ const [chartData, setChartData] = useState<{ name: string; listed: number; sold: number }[]>([]);
 
-//  const dummyData = [
-//   { name: "Mon", listed: 800, sold: 600 },
-//   { name: "Tue", listed: 700, sold: 500 },
-//   { name: "Wed", listed: 750, sold: 550 },
-//   { name: "Thu", listed: 720, sold: 530 },
-//   { name: "Fri", listed: 770, sold: 580 },
-//   { name: "Sat", listed: 1000, sold: 700 },
-//   { name: "Sun", listed: 1050, sold: 750 },
-//  ];
+ const dummyData = [
+   { name: "Mon", listed: 800, sold: 600 },
+   { name: "Tue", listed: 700, sold: 500 },
+   { name: "Wed", listed: 750, sold: 550 },
+   { name: "Thu", listed: 720, sold: 530 },
+   { name: "Fri", listed: 770, sold: 580 },
+   { name: "Sat", listed: 1000, sold: 700 },
+   { name: "Sun", listed: 1050, sold: 750 },
+ ];
 
-//  useEffect(() => {
-//   setChartData(dummyData);
-//  }, []);
+ useEffect(() => {
+  setChartData(dummyData);
+ }, []);
 
  return (
   <div className="rounded-xl text-white h-full">
