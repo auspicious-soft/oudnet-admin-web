@@ -63,7 +63,7 @@ const Page = () => {
 
 
    {/* table  */}
-   <div className="col-span-2 bg-[#212121] p-[30px] rounded-xl border border-purple-800">
+   <div className="col-span-2 bg-[#212121] p-[30px] rounded-xl ">
     <h2 className="justify-start text-[#D1D1D1] text-xl font-medium">Orders</h2>
 
     <div className="overflow-x-auto mt-[25px]">
