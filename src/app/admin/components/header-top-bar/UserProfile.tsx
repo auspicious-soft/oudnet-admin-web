@@ -31,7 +31,7 @@ const UserProfile = () => {
       </div>
      </div>
      <DropdownMenuItem className="p-0 !bg-transparent">
-      <Link className="gap-2 w-full p-[8px] hover:bg-[#1a3f70] hover:text-white rounded-sm dm-sans" href="/admin/admin-profile">
+      <Link className="gap-2 w-full p-[8px] hover:bg-[#EEC584] hover:text-white rounded-sm dm-sans" href="/admin/admin-profile">
        User Profile
       </Link>
      </DropdownMenuItem>
@@ -39,7 +39,7 @@ const UserProfile = () => {
 
     <AlertDialog>
      <AlertDialogTrigger asChild>
-      <Button className=" cursor-pointer gap-2 text-left justify-start bg-transparent w-full p-[8px] hover:bg-[#1a3f70] hover:text-white rounded-sm dm-sans">Logout</Button>
+      <Button className=" cursor-pointer gap-2 text-left justify-start bg-transparent w-full p-[8px] hover:bg-[#EEC584] hover:text-white rounded-sm dm-sans">Logout</Button>
      </AlertDialogTrigger>
      <AlertDialogContent className="md:p-11 bg-[#1b2236] rounded-[20px] border-0 !max-w-[428px] !gap-5">
       <AlertDialogHeader className="gap-4">
@@ -49,7 +49,7 @@ const UserProfile = () => {
        </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter className="!justify-center">
-       <AlertDialogCancel className="cursor-pointer !bg-[#1a3f70] !text-white rounded-lg  border-0 min-w-[170px] h-11">No</AlertDialogCancel>
+       <AlertDialogCancel className="cursor-pointer !bg-[#EEC584] !text-white rounded-lg  border-0 min-w-[170px] h-11">No</AlertDialogCancel>
        {/* <AlertDialogAction onClick={() => signOut({ redirectTo: '/' })} className=" cursor-pointer !bg-[#ff4747] !text-white rounded-lg min-w-[170px] h-11">Yes</AlertDialogAction> */}
       </AlertDialogFooter>
      </AlertDialogContent>

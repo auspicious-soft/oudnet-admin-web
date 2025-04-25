@@ -15,15 +15,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
      <OudnetBanner />
     </div>
 
-    {/* <div className="w-full lg:w-[50%] flex justify-center items-center p-[20px]">
-     <div className="flex flex-col items-center text-center w-full max-w-[500px] ">
-      <Logo />
-      {children}
-      <div />
-     </div>
-    </div> */}
 
-    <div className="w-full lg:w-[50%] flex justify-center items-center p-[20px] min-h-screen">
+    <div className="w-full lg:w-[50%] flex justify-center items-center px-[20px] py-[50px] min-h-screen">
      <div className="flex flex-col items-center text-center w-full max-w-[500px]">
       <Logo />
       {children}

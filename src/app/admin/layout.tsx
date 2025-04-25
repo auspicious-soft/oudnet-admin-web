@@ -3,13 +3,11 @@ import "../globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-side-bar/AppSidebar";
 import TopBar from "./components/header-top-bar/TopBar";
-// import Link from "next/link";
-// import { redirect } from "next/navigation";
 
 
 
 export const metadata: Metadata = {
- title: "Meditation",
+ title: "Oudnet",
  description: "",
 };
 
@@ -24,8 +22,7 @@ export default async function RootLayout({
    
   
  return (
-//   <html lang="en">
-//    <body >
+
 <div>
     <SidebarProvider>
      <AppSidebar />
@@ -35,8 +32,7 @@ export default async function RootLayout({
      </div>
     </SidebarProvider>
     </div>
-//    </body>
-//   </html>
+
  );
 
  

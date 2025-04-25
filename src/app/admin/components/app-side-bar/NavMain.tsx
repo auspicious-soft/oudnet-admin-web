@@ -37,7 +37,7 @@ export function NavMain({
   const pathname = usePathname()
 
   return (
-    <SidebarGroup className="p-0 dm-sans">
+    <SidebarGroup className="p-0 bg-[#111111] dm-sans">
       <SidebarMenu>
         {items.map((item) => {
           const isActive = pathname === item.url || (item.items && item.items.some(sub => pathname === sub.url))
@@ -51,7 +51,7 @@ export function NavMain({
             >
               <SidebarMenuItem >
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title} className={`cursor-pointer px-[12px] py-[10px] dm-sans h-auto ${isActive ? "bg-[#1a3f70]" : "font-normal"}`}>
+                  <SidebarMenuButton tooltip={item.title} className={`cursor-pointer px-[12px] py-[10px] dm-sans h-auto ${isActive ? "bg-[#EEC584]" : "font-normal"}`}>
                   {item.icon && React.createElement(item.icon, { className: "!h-5 !w-5" })}
                     <span className="dm-sans">{item.title}</span>
                     <ChevronRight className={`ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 ${isActive ? "rotate-[90deg]" : "rotate-0"}`} />
@@ -79,7 +79,7 @@ export function NavMain({
           ) : (
             <SidebarMenuItem key={item.title} className={isActive  ? "" : ""} >
               <SidebarMenuButton asChild tooltip={item.title} >
-                <a href={item.url} className={`dm-sans px-[12px] py-[10px] h-auto flex items-center gap-2  ${isActive ? "bg-[#1a3f70]" : "font-normal"}`}>
+                <a href={item.url} className={`dm-sans px-[12px] py-[10px] h-auto flex items-center gap-2  ${isActive ? "bg-[#EEC584]" : "font-normal"}`}>
                 {item.icon && React.createElement(item.icon, { className: "!h-5 !w-5" })}
                   <span >{item.title}</span>
                 </a>
