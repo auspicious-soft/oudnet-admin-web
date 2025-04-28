@@ -17,6 +17,11 @@ const PageTitle = () => {
     pageTitle = "Dashboard";
   }
 
+  const userManagement = /^\/admin\/user\/[0-9a-fA-F]{24}$/;
+  if (userManagement.test(pathname)) {
+    pageTitle = "Userssss";
+  }
+
 
   // const userprofileEditPattern =
   //      /^\/admin\/user-lists\/user-profile-edit\/[0-9a-zA-Z]{24}$/;

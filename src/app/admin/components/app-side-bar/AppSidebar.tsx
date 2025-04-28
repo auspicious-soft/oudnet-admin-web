@@ -1,88 +1,173 @@
+// "use client";
+// import * as React from "react";
+// import LogoCard from "./LogoCard";
+// import { NavMain } from "./NavMain";
+// import { Sidebar, SidebarContent, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+// import { HomeIcon, List, Logout, Notifications, Orders, Promotions, Store, UserIcon } from "@/lib/svg";
+// import { usePathname } from "next/navigation";
+
+// const data = {
+//  navMain: [
+//   {
+//    title: "Dashboard",
+//    url: "/admin/dashboard",
+//    icon: HomeIcon,
+//   },
+
+//   {
+//    title: "User Management",
+//    url: "/admin/user",
+//    icon: UserIcon,
+//   },
+//   {
+//    title: "Store Management",
+//    url: "#",
+//    icon: Store,
+//   },
+//   {
+//    title: "Product Listing",
+//    url: "#",
+//    icon: List,
+//   },
+//   {
+//    title: "Orders Overview",
+//    url: "#",
+//    icon: Orders,
+//   },
+//   {
+//    title: "Notifications & Announcements",
+//    url: "#",
+//    icon: Notifications,
+//   },
+//   {
+//    title: "Advertisements & Promotions",
+//    url: "#",
+//    icon: Promotions,
+//   },
+//  ],
+// };
+
+// export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+//  const pathname = usePathname(); // current path
+//  const isLogoutActive = pathname === "/logout";
+//  return (
+//   <Sidebar collapsible="icon" {...props} className="py-5 bg-black rounded-tr-[20px]">
+//    <SidebarHeader className="px-4 pt-1 pb-0 md:p-0 bg-[#111111] py-10">
+//     <LogoCard />
+//    </SidebarHeader>
+
+//    <SidebarContent className="p-0 m-0 py-10">
+//     <NavMain items={data.navMain} />
+//    </SidebarContent>
+
+//    <div className="">
+//     <SidebarMenuItem>
+//      <SidebarMenuButton asChild tooltip="Logout">
+//       <button
+//        // onClick={handleLogout}
+//        className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isLogoutActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"} w-full`}
+//       >
+//        <Logout />
+//        <span>Logout</span>
+//       </button>
+//      </SidebarMenuButton>
+//     </SidebarMenuItem>
+//    </div>
+//   </Sidebar>
+//  );
+// }
+
+
+
 "use client";
-
 import * as React from "react";
-// import { Sidebar,SidebarContent,SidebarHeader,} from "@/components/ui/sidebar";
 import LogoCard from "./LogoCard";
-// import { Sidebar } from "@/components/ui/sidebar";
 import { NavMain } from "./NavMain";
-// import { AudioTagesIcon, BellNotifactionIcon, CompassIcon, FAQIcon, SecurityIcon, SubscriptionIcon, UsersIcon } from "@/lib/svg";
-// import { useRouter } from "next/navigation";
-import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { HomeIcon, List, Logout, Notifications, Orders, Promotions, Store, UserIcon } from "@/lib/svg";
+import { usePathname } from "next/navigation";
 
-// Sample data for the sidebar menu
 const data = {
   navMain: [
     {
       title: "Dashboard",
       url: "/admin/dashboard",
-      // icon: CompassIcon 
+      icon: HomeIcon,
     },
+
     {
       title: "User Management",
-      url: "#",
-      // icon: UsersIcon,
-      // items: [
-      //   { title: "Company Lists", url: "/admin/company-lists" },
-      //   { title: "User Lists", url: "/admin/user-lists" },
-      //   { title: "Blocked Users", url: "/admin/blocked-users" },
-      // ],
+      url: "/admin/user",
+      icon: UserIcon,
     },
     {
       title: "Store Management",
       url: "#",
-      // icon: SecurityIcon,
-      items: [
-        { title: "All Collections", url: "/admin/all-collections" },
-        { title: "Audio Files", url: "/admin/audio-files" },
-      ],
+      icon: Store,
     },
     {
       title: "Product Listing",
-      url: "/admin/audio-tags",
-      // icon: AudioTagesIcon,
+      url: "#",
+      icon: List,
     },
     {
       title: "Orders Overview",
-      url: "/admin/subscription",
-      // icon: SubscriptionIcon,
+      url: "#",
+      icon: Orders,
     },
     {
       title: "Notifications & Announcements",
-      url: "/admin/analytics",
-      // icon: SubscriptionIcon,
+      url: "#",
+      icon: Notifications,
     },
     {
       title: "Advertisements & Promotions",
-      url: "/admin/requests",
-      // icon: BellNotifactionIcon,
+      url: "#",
+      icon: Promotions,
     },
-    {
-      title: "Log Out",
-      url: "/admin/faqs",
-      // icon: FAQIcon,
-    },
-    
   ],
 };
 
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // const router = useRouter()
+  const pathname = usePathname();
+  const isLogoutActive = pathname === "/logout";
+
+  // State to track active icon
+  // const [activeIcon, setActiveIcon] = React.useState<string | null>(null);
+
+  // Function to handle icon click
+  // const handleIconClick = (iconName: string) => {
+  //   setActiveIcon(activeIcon === iconName ? null : iconName);
+  // };
+
+  // Function to determine the SVG color
+  // const getIconColor = (iconName: string) => {
+  //   return activeIcon === iconName ? "black" : "#ABABAB"; // Default to gray, change to black when active
+  // };
+
   return (
-    <Sidebar collapsible="icon" {...props} className="bg-[#524e4e] !py-6 !px-4 !border-0 rounded-tr-[20px] rounded-br-[20px]">
-      <SidebarHeader className="px-4 pt-1 pb-0 md:p-0">
+    <Sidebar collapsible="icon" {...props} className="py-5 bg-black rounded-tr-[20px]">
+      <SidebarHeader className="px-4 pt-1 pb-0 md:p-0 bg-[#111111] py-10">
         <LogoCard />
       </SidebarHeader>
-      <hr className="opacity-[0.30] mb-5 md:my-6"></hr>
-      <SidebarContent className="px-0 py-0  md:p-0">
+
+      <SidebarContent className="p-0 m-0 py-10">
         <NavMain items={data.navMain} />
       </SidebarContent>
-      {/* <div className="flex gap-2 items-center hover:cursor-pointer mt-6 text-white text-base font-normal px-4 py-0 md:p-0"
-      onClick={()=> router.push('/admin/subscription-expiring')}>
-        <BellNotifactionIcon />
-         Subscriptions Expiring Today
-      </div> */}
-      <hr className="opacity-[0.30] mt-6"></hr>
+
+      <div className="">
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild tooltip="Logout">
+            <button
+              // onClick={handleLogout}
+              className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isLogoutActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"} w-full`}
+            >
+              <Logout />
+              <span>Logout</span>
+            </button>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </div>
     </Sidebar>
   );
 }

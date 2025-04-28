@@ -7,7 +7,7 @@ const MobileTrigger = () => {
     <div className=" items-center gap-2 flex md:hidden">
       <SidebarTrigger />
       <Link href="/">
-        <Image src="/images/logo.svg" alt="Logo" width={109} height={54} />
+        <Image src="/logo.svg" alt="Logo" width={109} height={54} />
       </Link>
     </div>
   );

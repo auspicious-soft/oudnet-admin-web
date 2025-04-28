@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React  from "react";
 import WeeklyStatChart from "../components/weekly-stat-chart/WeeklyStatChart";
+import CustomTable from "@/app/(auth)/components/Table";
 
 const userStats = [
  { title: "Total Users", count: "25,587", icon: "/users.svg" },
@@ -9,12 +10,83 @@ const userStats = [
  { title: "Store Products", count: "38,824", icon: "/storeProduct.svg" },
  { title: "Orders This Week", count: "5,782", icon: "/bags.svg" },
 ];
+
 const topStores = [
  { name: "Oud Factory", sales: "520 products sold this week", logo: "/oudFactory.svg" },
  { name: "Oud Factory", sales: "520 products sold this week", logo: "/oudFactory.svg" },
  { name: "Oud Factory", sales: "520 products sold this week", logo: "/oudFactory.svg" },
  { name: "Oud Factory", sales: "520 products sold this week", logo: "/oudFactory.svg" },
 ];
+
+
+const columns = [
+  { label: "Sr No.", key: "srno" },
+  { label: "Name of user", key: "nameofuser" },
+  { label: "Number of Products Sold (Today)", key: "ProductsSoldToday" },
+  { label: "Number of Products Sold (This Week)", key: "ProductsSoldThisWeek" },
+  { label: "Revenue (Today)", key: "revenueToday", align: "right" as "right" },
+  { label: "Action", key: "action", align: "right" as "right" },
+];
+
+const data = [
+  {
+    srno: 1,
+    nameofuser: "Isabella Anderson", 
+    ProductsSoldToday: 42, 
+    ProductsSoldThisWeek: 245 , 
+    revenueToday: "د.إ 45.67",         
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 2,
+    nameofuser: "Sarah Williams",
+    ProductsSoldToday: 17,
+    ProductsSoldThisWeek: 678, 
+    revenueToday: "82.94 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 3,
+    nameofuser: "Emily Brown",
+    ProductsSoldToday: 88,
+    ProductsSoldThisWeek: 912, 
+    revenueToday: "120.89 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 4,
+    nameofuser: "Richard Thompson",
+    ProductsSoldToday: 56,
+    ProductsSoldThisWeek: 345, 
+    revenueToday: "210.50 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 5,
+    nameofuser: "Robert Johnson",
+    ProductsSoldToday: 23,
+    ProductsSoldThisWeek: 789, 
+    revenueToday: "12.99 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 6,
+    nameofuser: "William Davis",
+    ProductsSoldToday: 99,
+    ProductsSoldThisWeek: 123, 
+    revenueToday: "6.78 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 7,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+];
+
 
 const Page = () => {
  return (
@@ -63,47 +135,11 @@ const Page = () => {
 
 
    {/* table  */}
-   <div className="col-span-2 bg-[#212121] p-[30px] rounded-xl ">
-    <h2 className="justify-start text-[#D1D1D1] text-xl font-medium">Orders</h2>
-
-    <div className="overflow-x-auto mt-[25px]">
-     <table className="w-full text-left">
-      <thead className="text-xs font-normal text-[#797A7C] border-b-[2px] border-dashed border-[#797A7C]">
-       <tr>
-        <th className="">Sr No.</th>
-        <th className="px-4 py-3 ">Name of Store</th>
-        <th className="px-4 ">Products Sold (Today)</th>
-        <th className="px-4 ">Products Sold (This Week)</th>
-        <th className="px-4 text-right">Revenue (Today)</th>
-        <th className="px-4 text-right">Action</th>
-       </tr>
-      </thead>
-
-      <tbody className=" text-[#D1D1D1]">
-       {[
-        { name: "Isabella Anderson", today: 42, week: 245, revenue: "د.إ 45.67" },
-        { name: "Sarah Williams", today: 17, week: 678, revenue: "82.94 د.إ" },
-        { name: "Emily Brown", today: 88, week: 912, revenue: "120.89 د.إ" },
-        { name: "Richard Thompson", today: 56, week: 345, revenue: "210.50 د.إ" },
-        { name: "Robert Johnson", today: 23, week: 789, revenue: "12.89 د.إ" },
-        { name: "William Davis", today: 99, week: 123, revenue: "6.78 د.إ" },
-        { name: "Michael Jones", today: 34, week: 456, revenue: "155.00 د.إ" },
-       ].map((order, index) => (
-        <tr key={index} className="hover:bg-[#2a2a2a]  my-[10px]">
-         <td className=" ">{index + 1}</td>
-         <td className="py-3 px-4">{order.name}</td>
-         <td className="py-3 px-4">{order.today}</td>
-         <td className="py-3 px-4">{order.week}</td>
-         <td className="py-3 px-4 text-right">{order.revenue} </td>
-         <td className="py-3 px-4">
-          <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block" />
-         </td>
-        </tr>
-       ))}
-      </tbody>
-     </table>
+<div>
+      <CustomTable title="Orders" columns={columns} data={data} />
     </div>
-   </div>
+
+
   </>
  );
 };

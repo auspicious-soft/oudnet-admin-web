@@ -43,11 +43,19 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
+/* body {
   background: radial-gradient(circle at 102% 0, #eec584b3 -42%, #000 25% 65%);
   height: 100%;
   margin: 0;
-}  
+}   */
+
+body {
+  background: 
+    radial-gradient(circle at 102% 0, #eec584b3 -42%, #000 25% 65%), 
+    radial-gradient(circle at -2% 100%, #eec584b3 -42%, #000 25% 65% );
+  height: 100%;
+  margin: 0;
+}
 
 * {
   box-sizing: border-box;
@@ -168,4 +176,12 @@ body {
 
 .font-newyork {
   font-family: var(--font-newyork-regular), sans-serif;
+}  
+.active a svg path, [data-slot="sidebar-menu"] a:hover svg path {  
+  stroke: #000000;
+}
+@media(min-width: 1024px){
+[data-slot="sidebar-container"], [data-slot="sidebar"] {
+  width: 300px;
+}
 }
