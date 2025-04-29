@@ -1,5 +1,4 @@
 import React from "react";
-import SearchBar from "./searchBar";
 import PageTitle from "./PageTitle";
 import MobileTrigger from "./MobileTrigger";
 
@@ -16,7 +15,6 @@ const TopBar = () => {
         <UserProfile />
       </div> */}
       <div className="block md:hidden  w-full card-bg rounded-lg p-[10px]">
-        <SearchBar />
       </div>
     </div>
   );

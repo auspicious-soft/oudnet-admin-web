@@ -19,16 +19,7 @@ const topStores = [
 ];
 
 
-// const columns = [
-//   { label: "Sr No.", key: "srno" },
-//   { label: "Name of user", key: "nameofuser" },
-//   { label: "Number of Products Sold (Today)", key: "ProductsSoldToday" },
-//   { label: "Number of Products Sold (This Week)", key: "ProductsSoldThisWeek" },
-//   { label: "Revenue (Today)", key: "revenueToday", align: "right" as "right" },
-//   { label: "Action", key: "action", align: "right" as "right" },
-// ];
-
-type AlignType = "left" | "right"; // assuming these are your options
+type AlignType = "left" | "right"; 
 
 interface Column {
   label: string;

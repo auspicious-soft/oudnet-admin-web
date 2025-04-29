@@ -1,18 +1,15 @@
-// import { Input } from '@/components/ui/input';
-// import { Search } from 'lucide-react';
-import React from 'react';
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import React from "react";
 
 const SearchBar = () => {
-    return (
-      <div className="relative bg-[#0b132b] !rounded-lg">
-        {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-3 w-3 text-white" />
-        <Input
-          type="text"
-          placeholder="Search..."
-          className="pl-8 placeholder-white bg-transparent dm-sans border-0 !rounded-lg !text-sm font-normal !text-white w-full max-w-[214px] md:min-w-[214px] h-10"      
-        /> */}
-      </div>
-    );
-}
+ return (
+  <div className="relative bg-[#000000] !rounded-[20px] flex items-center gap-[11px]  ml-auto lg:py-[10px] lg:px-[20px] py-[6px] px-[6px]">
+   <Search className="h-[11px] w-[11px] text-[#D1D1D1] " />
+   <Input type="text" placeholder="Search" className=" placeholder-white bg-transparent border-0 !text-sm !font-normal !text-[#D1D1D1] w-full   " />
+  </div>
+
+ );
+};
 
 export default SearchBar;

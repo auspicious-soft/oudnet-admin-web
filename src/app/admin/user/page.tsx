@@ -1,6 +1,7 @@
 import CustomTable from '@/app/(auth)/components/Table';
 import Image from 'next/image';
 import React from 'react'
+import SearchBar from '../components/header-top-bar/searchBar';
 
 
 type AlignType = "left" | "right"; 
@@ -131,6 +132,8 @@ const columns: Column[] = [
 const Page = () => {
   return (
     <>
+      <SearchBar />
+
      <div>
       <CustomTable  columns={columns} data={data} />
     </div>
