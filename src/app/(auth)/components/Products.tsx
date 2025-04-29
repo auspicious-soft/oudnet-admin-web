@@ -22,10 +22,15 @@ interface ProductGridProps {
 export default function ProductGrid({ products, showRating = true }: ProductGridProps) {
  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
- function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-  console.log("Account deletion confirmed");
-  setIsDialogOpen(false);
- }
+//  function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+//   console.log("Account deletion confirmed");
+//   setIsDialogOpen(false);
+//  }
+function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.preventDefault(); // if needed
+    console.log("Account deletion confirmed");
+    setIsDialogOpen(false);
+  }
 
  return (
   <>
@@ -60,29 +65,6 @@ export default function ProductGrid({ products, showRating = true }: ProductGrid
    </div>
 
    {/* modal  */}
-
-   {/* <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-    <DialogContent className="bg-[#333333] border-none max-w-fit w-full sm:w-auto p-6 rounded-[30px] text-white">
-     <AlertDialogHeader className="text-center">
-      <DialogTitle className="text-2xl sm:text-xl font-normal font-newyork text-white">Delete Product</DialogTitle>
-      <DialogDescription className="mt-1 text-sm sm:text-xs text-[#ABABAB]">Are you sure you want to delete this product?</DialogDescription>
-     </AlertDialogHeader>
-
-     <AlertDialogFooter className="flex flex-col sm:flex-row gap-[10px] sm:gap-[6px] justify-center items-center mt-6 w-full">
-
-      <Button variant="outline" className="w-full sm:w-auto lg:px-[94px] lg:py-[18px] px-[40px] py-[15px] bg-[#212121] text-[#D1D1D1] rounded-lg outline-1 outline-offset-[-1px] outline-zinc-800" onClick={() => setIsDialogOpen(false)}>
-       Cancel
-      </Button>
-
-      <Button variant="destructive" className="w-full sm:w-auto lg:px-[94px] lg:py-[18px] px-[40px] py-[15px] bg-[#FF0000] text-[#D1D1D1] rounded-lg outline-1 outline-offset-[-1px] outline-zinc-800" >
-       Delete
-      </Button>
-
-     </AlertDialogFooter>
-
-    </DialogContent>
-   </Dialog> */}
-
 
    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
     <AlertDialogContent className="bg-[#333333] border-none max-w-fit w-full sm:w-auto p-6 rounded-[30px] text-white">

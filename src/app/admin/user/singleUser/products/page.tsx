@@ -81,7 +81,6 @@ const products = [
   return (
     <>
     <ProductGrid products={products} showRating={false} />;
-    {/* <Modal/> */}
     </>
   )
 }
