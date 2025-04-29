@@ -2,18 +2,23 @@ import CustomTable from '@/app/(auth)/components/Table';
 import Image from 'next/image';
 import React from 'react'
 
-// type Column = {
-//   label: string;
-//   key: string;
-//   align?: 'left' | 'center' | 'right';  // Optional property with specific values
-// };
-const columns = [
-    { label: "Sr No.", key: "srno" },
-    { label: "Name of user", key: "nameofuser" },
-    { label: "Email address", key: "email" },
-    { label: "Date of last purchase", key: "lastpurchase" },
-    { label: "Action", key: "action", align: "right" as "right" },
-  ];
+
+type AlignType = "left" | "right"; 
+
+interface Column {
+  label: string;
+  key: string;
+  align?: AlignType;
+}
+
+const columns: Column[] = [
+  { label: "Sr No.", key: "srno" },
+  { label: "Name of user", key: "nameofuser" },
+  { label: "Email address", key: "email" },
+  { label: "Date of last purchase", key: "lastpurchase" },
+  { label: "Action", key: "action", align: "right" },
+];
+
 
   const data = [
     {

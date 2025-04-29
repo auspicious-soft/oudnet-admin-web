@@ -19,13 +19,30 @@ const topStores = [
 ];
 
 
-const columns = [
+// const columns = [
+//   { label: "Sr No.", key: "srno" },
+//   { label: "Name of user", key: "nameofuser" },
+//   { label: "Number of Products Sold (Today)", key: "ProductsSoldToday" },
+//   { label: "Number of Products Sold (This Week)", key: "ProductsSoldThisWeek" },
+//   { label: "Revenue (Today)", key: "revenueToday", align: "right" as "right" },
+//   { label: "Action", key: "action", align: "right" as "right" },
+// ];
+
+type AlignType = "left" | "right"; // assuming these are your options
+
+interface Column {
+  label: string;
+  key: string;
+  align?: AlignType;
+}
+
+const columns: Column[] = [
   { label: "Sr No.", key: "srno" },
   { label: "Name of user", key: "nameofuser" },
   { label: "Number of Products Sold (Today)", key: "ProductsSoldToday" },
   { label: "Number of Products Sold (This Week)", key: "ProductsSoldThisWeek" },
-  { label: "Revenue (Today)", key: "revenueToday", align: "right" as "right" },
-  { label: "Action", key: "action", align: "right" as "right" },
+  { label: "Revenue (Today)", key: "revenueToday", align: "right" },
+  { label: "Action", key: "action", align: "right" },
 ];
 
 const data = [
@@ -86,6 +103,7 @@ const data = [
     action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
   },
 ];
+
 
 
 const Page = () => {

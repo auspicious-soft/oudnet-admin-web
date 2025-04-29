@@ -1,31 +1,35 @@
 "use client";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-
-interface Props {
- selectedYear: number;
- data: any;
- onYearChange: (year: number) => void;
-}
 
 const yAxisTickFormatter = (value: number) => {
  if (value < 1600) return value.toString();
  return `${value / 2000}k`;
 };
 
-const WeeklyStatChart = ({  }: Props) => {
- const [chartData, setChartData] = useState<{ name: string; listed: number; sold: number }[]>([]);
+interface Props {
+ selectedYear: number;
+ data: ChartData[];
+ onYearChange: (year: number) => void;
+}
+interface ChartData {
+ name: string;
+ listed: number;
+ sold: number;
+}
+const dummyData: ChartData[] = [
+ { name: "Mon", listed: 800, sold: 600 },
+ { name: "Tue", listed: 700, sold: 500 },
+ { name: "Wed", listed: 750, sold: 550 },
+ { name: "Thu", listed: 720, sold: 530 },
+ { name: "Fri", listed: 770, sold: 580 },
+ { name: "Sat", listed: 1000, sold: 700 },
+ { name: "Sun", listed: 1050, sold: 750 },
+];
 
- const dummyData = [
-   { name: "Mon", listed: 800, sold: 600 },
-   { name: "Tue", listed: 700, sold: 500 },
-   { name: "Wed", listed: 750, sold: 550 },
-   { name: "Thu", listed: 720, sold: 530 },
-   { name: "Fri", listed: 770, sold: 580 },
-   { name: "Sat", listed: 1000, sold: 700 },
-   { name: "Sun", listed: 1050, sold: 750 },
- ];
+const WeeklyStatChart = ({}: Props) => {
+ const [chartData, setChartData] = useState<typeof dummyData>([]);
 
  useEffect(() => {
   setChartData(dummyData);
