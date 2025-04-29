@@ -1,109 +1,178 @@
+"use client";
 import Image from "next/image";
 import React from "react";
-
+import CustomTable from "@/app/(auth)/components/Table";
+import { useRouter } from "next/navigation";
 
 const userStats = [
-  { title: "Products purchased", count: "19", icon: "/storeProduct.svg" },
-  { title: "Amount spent so far", count: " 2102.50 د.إ ", icon: "/store.svg" },
-  { title: "Phone number", count: "5", icon: "/bags.svg" }, 
-  { title: "Favourite Store", count: "Scented Treasures", icon: "/bags.svg" },
- ];
+ { title: "Products purchased", count: "19", icon: "/storeProduct.svg" },
+ { title: "Amount spent so far", count: " 2102.50 د.إ ", icon: "/wallet.svg" },
+ { title: "Phone number", count: "5", icon: "/bags.svg" },
+ { title: "Favourite Store", count: "Scented Treasures", icon: "/store.svg" },
+];
 
+type AlignType = "left" | "right";
+
+interface Column {
+ label: string;
+ key: string;
+ align?: AlignType;
+}
+
+const columns: Column[] = [
+ { label: "Sr No.", key: "srno" },
+ { label: "Purchased from", key: "Purchasedfrom" },
+ { label: "Date of purchase", key: "Dateofpurchase" },
+ { label: "Amount", key: "amount" },
+ { label: "Action", key: "action", align: "right" },
+];
+
+const data = [
+ {
+  srno: 1,
+  Purchasedfrom: "Oud Emporium",
+  Dateofpurchase: "March 15, 2023",
+  amount: "د.إ 45.67",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  // action: (
+  //   <Image
+  //     src="/view.svg"
+  //     alt="view"
+  //     width={28}
+  //     height={28}
+  //     className="ml-auto block cursor-pointer"
+  //     onClick={() => router.push("/admin/user/singleUser")}
+  //   />
+  // ),
+ },
+ {
+  srno: 2,
+  Purchasedfrom: "The Fragrant Oasis",
+  Dateofpurchase: "April 22, 2023",
+  amount: "د.إ 82.34",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 3,
+  Purchasedfrom: "Scented Treasures",
+  Dateofpurchase: "May 30, 2023",
+  amount: "د.إ 120.89",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 4,
+  Purchasedfrom: "Oud Emporium",
+  Dateofpurchase: "March 15, 2023",
+  amount: "د.إ 45.67",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 5,
+  Purchasedfrom: "The Fragrant Oasis",
+  Dateofpurchase: "April 22, 2023",
+  amount: "82.34",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 6,
+  Purchasedfrom: "Scented Treasures",
+  Dateofpurchase: "May 30, 2023",
+  amount: "د.إ 120.89",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 7,
+  Purchasedfrom: "Oud Haven",
+  Dateofpurchase: "June 10, 2023",
+  amount: "د.إ 210.50",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 8,
+  Purchasedfrom: "Essence of Oud",
+  Dateofpurchase: "July 5, 2023",
+  amount: "د.إ 12.99",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 9,
+  Purchasedfrom: "Oud Boutique",
+  Dateofpurchase: "August 18, 2023",
+  amount: "د.إ 6.78",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+ {
+  srno: 10,
+  Purchasedfrom: "Mystic Oud Shop",
+  Dateofpurchase: "September 12, 2023",
+  amount: "د.إ 155.00",
+  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+ },
+];
 
 const Page = () => {
+ const router = useRouter();
+
  return (
   <>
-
    <div className="flex justify-end">
-    <div className="px-[16px] py-[8px] bg-[#EEC584] rounded-[30px] inline-flex justify-center items-center">
+    <div onClick={ () => router.push("/admin/user/singleUser/products")} className="px-[16px] py-[8px] bg-[#EEC584] rounded-[30px] inline-flex justify-center items-center cursor-pointer">
      <div className="justify-start text-black text-sm font-normal">View uploaded products</div>
     </div>
    </div>
 
+   <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6  ">
+    {/* Image */}
+    <div className="w-full h-full">
+     <Image src="/UserImage.svg" height={330} width={330} alt="User" className="rounded-[20px] object-cover w-full h-full" />
+    </div>
 
-
-   <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6 bg-black p-6 rounded-xl">
-  {/* Image */}
-  <div className="w-full h-full">
-    <Image
-      src="/UserImage.svg" 
-      height={330}
-      width={330}
-      alt="User"
-      className="rounded-[20px] object-cover w-full h-full"
-    />
-  </div>
-
-  <div className="grid grid-rows-[auto_auto] gap-y-[40px] ">
-    <div className="grid grid-cols-2 gap-y-[30px] ">
+    <div className="grid grid-rows-[auto_auto] gap-y-[40px] ">
+     <div className="grid grid-cols-2 gap-y-[30px] break-words">
       {/* First Name */}
       <div className="flex flex-col gap-[8px]">
-        <span className="justify-center text-[#797A7C] text-sm font-normal ">First name</span>
-        <span className="justify-start text-[#D1D1D1] text-xl font-medium ">Richard</span>
+       <span className="justify-center text-[#797A7C] text-sm font-normal ">First name</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium  ">Richard</span>
       </div>
 
       {/* Last Name */}
       <div className="flex flex-col gap-[8px]">
-        <span className="justify-center text-[#797A7C] text-sm font-normal">Last name</span>
-        <span className="justify-start text-[#D1D1D1] text-xl font-medium">Thompson</span>
+       <span className="justify-center text-[#797A7C] text-sm font-normal">Last name</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium ">Thompson</span>
       </div>
 
       {/* Phone Number */}
       <div className="flex flex-col gap-[8px]">
-        <span className="justify-center text-[#797A7C] text-sm font-normal">Phone number</span>
-        <span className="justify-start text-[#D1D1D1] text-xl font-medium">+1 254 458 6985</span>
+       <span className="justify-center text-[#797A7C] text-sm font-normal">Phone number</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium ">+1 254 458 6985</span>
       </div>
 
       {/* Email Address */}
       <div className="flex flex-col gap-[8px]">
-        <span className="justify-center text-[#797A7C] text-sm font-normal">Email address</span>
-        <span className="justify-start text-[#D1D1D1] text-xl font-medium">noah.thompson@example.com</span>
+       <span className="justify-center text-[#797A7C] text-sm font-normal">Email address</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium ">noah.thompson@example.com</span>
       </div>
+     </div>
+
+     {/* Bottom - Cards */}
+     <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-4 gap-y-5 ">
+      {userStats.map((stat, i) => (
+       <div key={i} className="flex gap-[10px] items-center  p-[10px] rounded-[10px]  outline-1 outline-offset-[-1px] outline-[#333333] break-words ">
+        <Image src={stat.icon} alt={stat.title} width={36} height={36} />
+        <div className="flex flex-col gap-[4px]">
+         <div className="text-[#797A7C] md:text-base text-sm  font-normal ">{stat.title}</div>
+         <div className="text-[#D1D1D1]  xl:text-xl lg:text-md text-md font-medium">{stat.count}</div>
+        </div>
+       </div>
+      ))}
+     </div>
     </div>
+   </div>
 
-    {/* Bottom - Cards */}
-    <div className="grid grid-cols-2 gap-6">
-      {/* Card 1 */}
-        {userStats.map((stat, i) => (
-         <div key={i} className="flex gap-[21px] items-center ">
-          <Image src={stat.icon} alt={stat.title} width={60} height={60} />
-          <div className="flex flex-col gap-[4px]">
-           <div className="text-[#797A7C] text-base  font-normal ">{stat.title}</div>
-           <div className="text-[#D1D1D1]  text-xl font-medium">{stat.count}</div>
-          </div>
-         </div>
-        ))}
-
-      {/* Card 2 */}
-      {/* <div className="border border-neutral-700 rounded-xl p-4 flex items-center gap-4">
-        <img src="/amount-spent-icon.svg" alt="Amount" className="w-8 h-8" />
-        <div>
-          <div className="text-neutral-400 text-sm">Amount spent so far</div>
-          <div className="text-white font-semibold text-lg">د.إ 2102.50</div>
-        </div>
-      </div> */}
-
-      {/* Card 3 */}
-      {/* <div className="border border-neutral-700 rounded-xl p-4 flex items-center gap-4">
-        <img src="/products-listed-icon.svg" alt="Listed" className="w-8 h-8" />
-        <div>
-          <div className="text-neutral-400 text-sm">Products Listed</div>
-          <div className="text-white font-semibold text-lg">5</div>
-        </div>
-      </div> */}
-
-      {/* Card 4 */}
-      {/* <div className="border border-neutral-700 rounded-xl p-4 flex items-center gap-4">
-        <img src="/favourite-store-icon.svg" alt="Store" className="w-8 h-8" />
-        <div>
-          <div className="text-neutral-400 text-sm">Favourite Store</div>
-          <div className="text-white font-semibold text-lg">Scented Treasures</div>
-        </div>
-      </div> */}
-    </div>
-  </div>
-</div>
-
+   {/* table  */}
+   <div className="mt-[40px]">
+    <CustomTable title="Recent Orders" columns={columns} data={data} />
+   </div>
   </>
  );
 };
