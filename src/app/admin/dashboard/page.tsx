@@ -3,6 +3,7 @@ import Image from "next/image";
 import React  from "react";
 import WeeklyStatChart from "../components/weekly-stat-chart/WeeklyStatChart";
 import CustomTable from "@/app/(auth)/components/Table";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 const userStats = [
  { title: "Total Users", count: "25,587", icon: "/users.svg" },
@@ -148,7 +149,11 @@ const Page = () => {
       <CustomTable title="Orders" columns={columns} data={data} />
     </div>
 
-
+  <div className="w-full flex justify-end mt-[20px]">
+  <div className="flex justify-end">
+    <StyledPagination  />
+  </div>
+</div>
   </>
  );
 };

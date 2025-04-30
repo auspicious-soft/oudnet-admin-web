@@ -19,7 +19,6 @@ export default async function RootLayout({
   <div>
    <SidebarProvider>
     <AppSidebar />
-
     <div className="flex flex-1  p-4 md:p-5 flex-col w-full md:w-[calc(100%-300px)] gap-8 ">
         <div className="flex justify-between">
      <TopBar />

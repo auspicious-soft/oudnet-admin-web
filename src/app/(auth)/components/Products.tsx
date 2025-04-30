@@ -70,7 +70,7 @@ function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEve
     <AlertDialogContent className="bg-[#333333] border-none max-w-fit w-full sm:w-auto p-6 rounded-[30px] text-white">
      <AlertDialogHeader className="text-center items-center">
       <AlertDialogTitle className="text-2xl sm:text-xl font-normal font-newyork text-white">Delete Product</AlertDialogTitle>
-      <AlertDialogDescription className="mt-1 text-sm sm:text-xs text-[#ABABAB]">Are you sure you want to delete this account?</AlertDialogDescription>
+      <AlertDialogDescription className="mt-1 text-sm sm:text-xs text-[#ABABAB]">Are you sure you want to delete this product?</AlertDialogDescription>
      </AlertDialogHeader>
 
      <AlertDialogFooter className="flex flex-col sm:flex-row gap-[10px] sm:gap-[6px] justify-center items-center mt-6 w-full">

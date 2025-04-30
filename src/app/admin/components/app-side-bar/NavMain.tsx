@@ -27,7 +27,7 @@ export function NavMain({
       <SidebarMenuItem key={item.title} className= {isActive ? "active" : ""} 
       >
        <SidebarMenuButton asChild tooltip={item.title}>
-        <a href={item.url} className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"}`}>
+        <a href={item.url} className={`dm-sans md:px-[12px] px-[18px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"}`}>
          {item.icon && React.createElement(item.icon, { className: "!h-5 !w-5" })}
          <span>{item.title}</span>
         </a>
