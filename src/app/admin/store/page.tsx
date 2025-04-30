@@ -6,7 +6,6 @@ import SearchBar from "../components/header-top-bar/searchBar";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import StyledPagination from "@/app/(auth)/components/Pagenation";
-// import { Pagenation } from "@/app/(auth)/components/Pagenation";
 
 type AlignType = "left" | "right";
 
@@ -223,3 +222,8 @@ const handleViewClick = (userId: string) => {
 };
 
 export default Page;
+
+
+
+
+
