@@ -15,7 +15,6 @@ const data = {
       url: "/admin/dashboard",
       icon: HomeIcon,
     },
-
     {
       title: "User Management",
       url: "/admin/user",
@@ -38,12 +37,12 @@ const data = {
     },
     {
       title: "Notifications & Announcements",
-      url: "#",
+      url: "/admin/Notification&Announcements",
       icon: Notifications,
     },
     {
       title: "Advertisements & Promotions",
-      url: "#",
+      url: "/admin/Advertisement&Promotios",
       icon: Promotions,
     },
   ],

@@ -30,7 +30,7 @@ interface Column {
 
 const columns: Column[] = [
   { label: "Sr No.", key: "srno" },
-  { label: "Name of user", key: "nameofuser" },
+  { label: "Name of Store", key: "nameofuser" },
   { label: "Number of Products Sold (Today)", key: "ProductsSoldToday" },
   { label: "Number of Products Sold (This Week)", key: "ProductsSoldThisWeek" },
   { label: "Revenue (Today)", key: "revenueToday", align: "right" },

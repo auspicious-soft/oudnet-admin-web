@@ -163,11 +163,8 @@ const handleSearch = (query: string) => {
   };
 
 
-//  const handleViewClick = (userId: string) => {
-//   router.push(`/admin/store/storeManagement`);
-//  };
 const handleViewClick = (userId: string) => {
-  router.push(`/admin/store/storeManagement/${userId}`);
+  router.push(`/admin/store/storeManagement`);
 };
 
 

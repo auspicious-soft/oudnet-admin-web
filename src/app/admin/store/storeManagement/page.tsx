@@ -33,6 +33,16 @@ const columns: Column[] = [
  { label: "Action", key: "action", align: "right" },
 ];
 
+
+
+const Page = () => {
+ const router = useRouter();
+ const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+const handleClick = () =>{
+    router.push('/admin/store/storeManagement/singleProduct');
+}
+ 
 const data = [
  {
   srno: 1,
@@ -40,7 +50,14 @@ const data = [
   Dateofpurchase: "March 15, 2023",
   rating: "4.2",
   amount: "د.إ 45.67",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 2,
@@ -48,7 +65,14 @@ const data = [
   Dateofpurchase: "April 22, 2023",
   rating: "4.2",
   amount: "د.إ 82.34",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 3,
@@ -56,7 +80,14 @@ const data = [
   Dateofpurchase: "May 30, 2023",
   rating: "4.2",
   amount: "د.إ 120.89",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 4,
@@ -64,7 +95,14 @@ const data = [
   Dateofpurchase: "March 15, 2023",
   rating: "4.2",
   amount: "د.إ 45.67",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 5,
@@ -72,7 +110,14 @@ const data = [
   Dateofpurchase: "April 22, 2023",
   rating: "4.2",
   amount: "82.34",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 6,
@@ -80,7 +125,14 @@ const data = [
   Dateofpurchase: "May 30, 2023",
   rating: "4.2",
   amount: "د.إ 120.89",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 7,
@@ -88,7 +140,14 @@ const data = [
   Dateofpurchase: "June 10, 2023",
   rating: "4.2",
   amount: "د.إ 210.50",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 8,
@@ -96,7 +155,14 @@ const data = [
   Dateofpurchase: "July 5, 2023",
   rating: "4.2",
   amount: "د.إ 12.99",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 9,
@@ -104,7 +170,14 @@ const data = [
   Dateofpurchase: "August 18, 2023",
   rating: "4.2",
   amount: "د.إ 6.78",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
  {
   srno: 10,
@@ -112,14 +185,16 @@ const data = [
   Dateofpurchase: "September 12, 2023",
   rating: "4.2",
   amount: "د.إ 155.00",
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  action: <Image
+  src="/view.svg"
+  alt="view"
+  width={28}
+  height={28}
+  className="ml-auto block cursor-pointer"
+  onClick={() =>handleClick()}
+/>,
  },
 ];
-
-const Page = () => {
- const router = useRouter();
- const [isDialogOpen, setIsDialogOpen] = useState(false);
-
  function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
   event.preventDefault(); // if needed
   console.log("Account deletion confirmed");

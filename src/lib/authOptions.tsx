@@ -2,6 +2,7 @@ import axios from "axios";
 import { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
 export const authOptions: AuthOptions = {
     session: {
@@ -24,7 +25,7 @@ export const authOptions: AuthOptions = {
             console.log("🛂 Received credentials:", email, password);
             try {
               const response = await axios.post(
-                `http://localhost:8000/api/login`,
+                `${BASE_URL}/api/login`,
                 { email, password }
               );
 

@@ -165,7 +165,7 @@ const handleSearch = (query: string) => {
 
 
 const handleViewClick = (userId: string) => {
-console.log("clicked Action")
+router.push(`/admin/products/singleProduct`);
 };
 
 
