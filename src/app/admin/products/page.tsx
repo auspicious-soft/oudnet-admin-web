@@ -56,7 +56,7 @@ const data = [
   rating: "4.5 stars",
   price: "732",
   id: "user_4",
- },
+ }, 
  {
   srno: 5,
   nameofproduct: "Timeless Curiosities",
