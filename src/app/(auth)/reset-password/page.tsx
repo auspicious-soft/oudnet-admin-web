@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "../components/AuthLayout";
 import { toast, ToastContainer } from "react-toastify";
+import { patchApi } from "@/utils/api";
 
 const Page = () => {
   const router = useRouter();
@@ -13,31 +14,92 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [verifiedOtp, setVerifiedOtp] = useState<string | null>(null);
+  useEffect(() => {
+    const storedOtp = sessionStorage.getItem("verified_otp");
+    const expirationTime = sessionStorage.getItem("otp_expiration");
+    
+    if (!storedOtp || !expirationTime) {
+      toast.error("Please verify your OTP first");
+      router.push("/otp");
+      return;
+    }
+    
+    // Check if OTP has expired
+    const hasExpired = Date.now() > parseInt(expirationTime);
+    
+    if (hasExpired) {
+      // Clear expired OTP
+      sessionStorage.removeItem("verified_otp");
+      sessionStorage.removeItem("otp_expiration");
+      
+      toast.error("OTP has expired. Please request a new one.");
+      router.push("/otp");
+      return;
+    }
+    
+    // OTP is valid, set it in state
+    setVerifiedOtp(storedOtp);
+    
+    // Set up expiration timer to clear OTP after remaining time
+    const remainingTime = parseInt(expirationTime) - Date.now();
+    const expirationTimer = setTimeout(() => {
+      sessionStorage.removeItem("verified_otp");
+      sessionStorage.removeItem("otp_expiration");
+      
+      toast.error("OTP has expired. Please request a new one.");
+      router.push("/otp");
+    }, remainingTime);
+    
+    // Clean up timer on component unmount
+    return () => clearTimeout(expirationTimer);
+  }, [router]);
 
 
-  const handleSubmit = () => {
+  console.log(verifiedOtp,"verifiedOTp")
+  const handleSubmit = async () => {
     if (!password || !confirmPassword) {
       toast.error("Please enter both password and confirm password.");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
     }
-
-    console.log("Password is:", password);
-    console.log("Confirm Password is:", confirmPassword);
-    
-    toast.success("Password updated successfully!");
-    setTimeout(() => {
-      router.push("/admin/dashboard");
-    }, 1000); 
   
-    setPassword("");
-    setConfirmPassword("");
+    if (!verifiedOtp) {
+        toast.error("OTP not found. Please verify OTP again.");
+        router.push("/otp");
+        return;
+      }
+  
+    try {
+      const response = await patchApi("/api/new-password-otp-verified", { password,  otp: verifiedOtp  });
+  
+      if (response.status === 200) {
+        toast.success("Password updated successfully!");
+        sessionStorage.removeItem("verified_otp");
+        sessionStorage.removeItem("otp_expiration");
+        
+        toast.success("Password updated successfully!");
+        
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+        
+        setPassword("");
+        setConfirmPassword("");
+      } else {
+        toast.error( "Failed to reset password.");
+      }
+    } catch (error) {
+      toast.error(
+        "An unexpected error occurred."
+      );
+      console.error("Password Reset Error:", error);
+    }
   };
-
 
 
 

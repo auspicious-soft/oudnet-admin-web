@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import CustomTable from "@/app/(auth)/components/Table";
 import { useRouter } from "next/navigation";
-import StyledPagination from "@/app/(auth)/components/Pagenation";
+// import StyledPagination from "@/app/(auth)/components/Pagenation";
 import Link from "next/link";
 
 const userStats = [
@@ -208,7 +208,7 @@ const Page = () => {
 
    <div className="w-full flex justify-end mt-[20px]">
     <div className="flex justify-end">
-     <StyledPagination />
+     {/* <StyledPagination /> */}
     </div>
    </div>
   </>

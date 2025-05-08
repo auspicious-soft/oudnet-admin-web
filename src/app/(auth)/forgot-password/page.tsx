@@ -5,35 +5,43 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "../components/AuthLayout";
+import { postApi } from "@/utils/api";
 
 const Page = () => {
  const router = useRouter();
  const [phone, setPhone] = useState("");
 
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  console.log("Mobile Number Submitted:", phone);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!phone) {
-    toast.error("Please enter mobile number");
-    return;
-  }
-  if (phone.length !== 10) {
-    toast.error("Mobile number must be 10 digits");
-    return;
-  }
+    if (!phone) {
+      toast.error("Please enter mobile number");
+      return;
+    }
 
-  console.log("Mobile Number:", phone);
-  toast.success("OTP sent on registered mobile number!");
+    if (phone.length !== 10) {
+      toast.error("Mobile number must be 10 digits");
+      return;
+    }
 
-  setTimeout(() => {
-    router.push("/otp");
-  }, 1000); 
-
-  setPhone("");
-};
-
+    try {
+      const response = await postApi('/api/forgot-password', { phoneNumber: phone });
+      if (response.status === 200) {
+        toast.success("OTP sent on registered mobile number!");
+        setTimeout(() => {
+          router.push("/otp");
+        }, 1000);
+      } else {
+        toast.error( "Failed to send OTP");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast.error("An error occurred while sending OTP");
+    } finally {
+      setPhone("");
+    }
+  };
 
  return (
   <AuthLayout>

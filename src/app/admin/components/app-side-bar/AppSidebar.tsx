@@ -4,7 +4,9 @@ import LogoCard from "./LogoCard";
 import { NavMain } from "./NavMain";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { HomeIcon, List, Logout, Notifications, Orders, Promotions, Store, UserIcon } from "@/lib/svg";
-import { usePathname } from "next/navigation";
+import { usePathname , useRouter  } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+
 
 const data = {
   navMain: [
@@ -26,12 +28,12 @@ const data = {
     },
     {
       title: "Product Listing",
-      url: "#",
+      url: "/admin/products",
       icon: List,
     },
     {
       title: "Orders Overview",
-      url: "#",
+      url: "/admin/orderOverview",
       icon: Orders,
     },
     {
@@ -50,19 +52,19 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const isLogoutActive = pathname === "/logout";
+   const { data: session } = useSession();
+   const router = useRouter();
+  
+   React.useEffect(() => {
+      console.log("Session:", session);
+    }, [session]);
 
-  // State to track active icon
-  // const [activeIcon, setActiveIcon] = React.useState<string | null>(null);
-
-  // Function to handle icon click
-  // const handleIconClick = (iconName: string) => {
-  //   setActiveIcon(activeIcon === iconName ? null : iconName);
-  // };
-
-  // Function to determine the SVG color
-  // const getIconColor = (iconName: string) => {
-  //   return activeIcon === iconName ? "black" : "#ABABAB"; // Default to gray, change to black when active
-  // };
+    const handleLogout = async () => {
+      localStorage.removeItem("backend_token");
+      document.cookie = "backend_token=; Max-Age=0; path=/;";
+      await signOut({ redirect: false });
+      router.push("/");
+    };
 
   return (
     <Sidebar collapsible="icon" {...props} className="py-5 bg-black rounded-tr-[20px]">
@@ -78,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip="Logout">
             <button
-              // onClick={handleLogout}
+              onClick={handleLogout}
               className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isLogoutActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"} w-full`}
             >
               <Logout />

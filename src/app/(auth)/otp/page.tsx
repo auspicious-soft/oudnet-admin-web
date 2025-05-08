@@ -9,27 +9,43 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import AuthLayout from "../components/AuthLayout";
+import { postApi } from "@/utils/api";
 
 const Page = () => {
   const router = useRouter();
   const [otp, setOtp] = useState(""); 
 
-  const handleVerify = () => {
-    if (otp.length < 5) {
+  const handleVerify = async () => {
+    if (otp.length < 6) {
       toast.error("Please enter the complete OTP");
       return;
     }
-
-    
-      console.log("OTP is:", otp);
-      toast.success("OTP verified!");
-    
-      setTimeout(() => {
-        router.push("/reset-password");
-      }, 1000); 
-    
-      setOtp("");
-
+  
+    try {
+      const response = await postApi("/api/verify-otp", { otp });
+  
+      if (response.status === 200) {
+        toast.success( "Token verified successfully");
+        const expirationTime = Date.now() + 5 * 60 * 1000; // Current time + 5 minutes in milliseconds
+      
+        // Store both the OTP and its expiration time
+        sessionStorage.setItem("verified_otp", otp);
+        sessionStorage.setItem("otp_expiration", expirationTime.toString());
+        
+        setTimeout(() => {
+          router.push("/reset-password");
+        }, 1000);
+      } else {
+        toast.error( "Failed to verify OTP");
+      }
+    } catch (error) {
+      toast.error(
+         "Invalid token"
+      );
+      console.error("OTP Verification Error:", error);
+    }
+  
+    setOtp("");
   };
 
   return (
@@ -55,13 +71,14 @@ const Page = () => {
         </div>
       </div>
 
-      <InputOTP maxLength={5} value={otp} onChange={setOtp}>
+      <InputOTP maxLength={6} value={otp} onChange={setOtp}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
           <InputOTPSlot index={2} />
           <InputOTPSlot index={3} />
           <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
         </InputOTPGroup>
       </InputOTP>
 

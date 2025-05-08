@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import CustomTable from "@/app/(auth)/components/Table";
 import { useRouter } from "next/navigation";
 import { Pencil } from "lucide-react";
-import StyledPagination from "@/app/(auth)/components/Pagenation";
+// import StyledPagination from "@/app/(auth)/components/Pagenation";
 import { AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -229,7 +229,7 @@ const Page = () => {
 
    <div className="w-full flex justify-end mt-[20px]">
     <div className="flex justify-end">
-     <StyledPagination />
+     {/* <StyledPagination /> */}
     </div>
    </div>
   </>

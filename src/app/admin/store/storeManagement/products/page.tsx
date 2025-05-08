@@ -85,7 +85,7 @@ const products = [
 
       <div className="w-full flex justify-end mt-[20px]">
          <div className="flex justify-end">
-           <StyledPagination />
+           {/* <StyledPagination /> */}
          </div>
        </div>
     </>

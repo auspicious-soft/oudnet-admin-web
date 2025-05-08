@@ -1,47 +1,61 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import Link from "next/link";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./(auth)/components/AuthLayout";
+import { signIn , useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const Page = () => {
  const router = useRouter();
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
- const [showPassword, setShowPassword] = useState(false); // add this state
+ const [showPassword, setShowPassword] = useState(false);
+ const { data: session } = useSession();
 
- const handleSubmit = () => {
-  if (!email) {
-   toast.error("Please enter email");
-   return;
-  }
 
-  if (!email.includes("@")) {
-   toast.error("Please enter a valid email");
-   return;
-  }
+ useEffect(() => {
+    console.log("Session:", session);
+  }, [session]);
 
-  if (!password) {
-   toast.error("Please enter password");
-   return;
-  }
-
-  // ✅ Log to console
-  console.log("Email:", email);
-  console.log("Password:", password);
-
-  // Proceed with form logic
-  toast.success("Form submitted!");
-
-  // ✅ Reset the input fields
-  setEmail("");
-  setPassword("");
- };
-
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+  
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+  
+      if (result?.error) {
+        toast.error("Invalid credentials");
+      } else {
+        const sessionRes = await fetch("/api/auth/session");
+        const session = await sessionRes.json();
+  
+        const accessToken = session?.accessToken;
+  
+        if (accessToken) {
+          localStorage.setItem("backend_token", accessToken);
+        } else {
+          console.warn("No accessToken found in session");
+        }
+  
+        toast.success("Login successful");
+        router.push("/admin/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred during login");
+    }
+  };
+  
  return (
   <AuthLayout>
    <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />

@@ -17,132 +17,132 @@ interface Column {
 
 const columns: Column[] = [
  { label: "Sr No.", key: "srno" },
- { label: "Name of Store", key: "nameofstore" },
- { label: "Store rating", key: "rating" },
- { label: "Products listed", key: "Productslisted" },
- { label: "Products sold", key: "Productssold" },
+ { label: "Name of Product", key: "nameofproduct" },
+ { label: "Name of Seller", key: "nameofseller" },
+ { label: "Product Rating", key: "rating" },
+ { label: "Price", key: "price" },
  { label: "Action", key: "action", align: "right" },
 ];
 
 const data = [
  {
   srno: 1,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_1",
  },
  {
   srno: 2,
-  nameofstore: "Whimsical Treasures",
+  nameofproduct: "Whimsical Treasures",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_2",
  },
  {
   srno: 3,
-  nameofstore: "Charming Finds",
+  nameofproduct: "Charming Finds",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_3",
  },
  {
   srno: 4,
-  nameofstore: "The Rustic Corner",
+  nameofproduct: "The Rustic Corner",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_4",
  },
  {
   srno: 5,
-  nameofstore: "Timeless Curiosities",
+  nameofproduct: "Timeless Curiosities",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_5",
  },
  {
   srno: 6,
-  nameofstore: "The Vintage Vault",
+  nameofproduct: "The Vintage Vault",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_6",
  },
  {
   srno: 7,
-  nameofstore: "Artisan Alley",
+  nameofproduct: "Artisan Alley",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_7",
  },
  {
   srno: 8,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_8",
  },
  {
   srno: 9,
-  nameofstore: "Whimsical Treasures",
+  nameofproduct: "Whimsical Treasures",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_9",
  },
  {
   srno: 10,
-  nameofstore: "Charming Finds",
+  nameofproduct: "Charming Finds",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_10",
  },
  {
   srno: 11,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_11",
  },
  {
   srno: 12,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_12",
  },
  {
   srno: 13,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_13",
  },
  {
   srno: 14,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_14",
  },
  {
   srno: 15,
-  nameofstore: "The Cozy Nook",
+  nameofproduct: "The Cozy Nook",
+  nameofseller: "Dummy User",
   rating: "4.5 stars",
-  Productslisted: "732",
-  Productssold: "732",
+  price: "732",
   id: "user_15",
  },
 ];
@@ -157,17 +157,15 @@ const handleSearch = (query: string) => {
       return;
     }
     const filtered = data.filter((item) =>
-      item.nameofstore.toLowerCase().includes(lowerCaseQuery)
+      item.nameofproduct.toLowerCase().includes(lowerCaseQuery)
     );
     setFilteredData(filtered);
   };
 
 
-//  const handleViewClick = (userId: string) => {
-//   router.push(`/admin/store/storeManagement`);
-//  };
+
 const handleViewClick = (userId: string) => {
-  router.push(`/admin/store/storeManagement/${userId}`);
+console.log("clicked Action")
 };
 
 
@@ -186,24 +184,13 @@ const handleViewClick = (userId: string) => {
   }));
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push('/admin/store/addStore');
-  };
+
  return (
   <>
    <div className="flex justify-end gap-[10px]">
     <SearchBar onSearch={handleSearch}  />
 
-    <button className="!px-4 !py-0 bg-[#EEC584] !rounded-[30px] h-10 flex justify-center items-center gap-2.5 cursor-pointer">
-     <Plus size={16} />
-     {/* <div className="justify-start text-black text-sm font-normal  ">Add New Store</div> */}
-     <div
-      onClick={handleClick}
-      className="cursor-pointer justify-start text-black text-sm font-normal"
-    >
-      Add New Store
-    </div>
-    </button>
+  
    </div>
 
    <div>
