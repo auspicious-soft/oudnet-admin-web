@@ -1,12 +1,19 @@
 "use client";
+import { postApi } from "@/utils/api";
 import { Pencil } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function CreateStoreForm() {
- const fileInputRef = useRef<HTMLInputElement | null>(null); // ✅ Type properly
+ const fileInputRef = useRef<HTMLInputElement | null>(null);
  const [previewImage, setPreviewImage] = useState<string | null>(null);
+ const [loading, setLoading] = useState(true);
+ const { data: session, status } = useSession();
 
+ const router = useRouter();
  const [storeData, setStoreData] = useState({
   storeName: "",
   ownerName: "",
@@ -16,7 +23,6 @@ export default function CreateStoreForm() {
   confirmPassword: "",
  });
 
- // ✅ Moved before return
  const handlePencilClick = () => {
   fileInputRef.current?.click();
  };
@@ -30,59 +36,126 @@ export default function CreateStoreForm() {
   }
  };
 
+ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setStoreData((prev) => ({
+   ...prev,
+   [name]: value,
+  }));
+ };
+
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (status !== "authenticated") return;
+
+  console.log("clicked");
+  if (storeData.password !== storeData.confirmPassword) {
+   toast.error("Passwords do not match");
+   return;
+  }
+  setLoading(true);
+  const token = session?.accessToken;
+  const role = session?.user?.role;
+
+  try {
+   const payload = {
+    storeName: storeData.storeName,
+    ownerName: storeData.ownerName,
+    phoneNumber: storeData.phone,
+    email: storeData.email,
+    password: storeData.password,
+   };
+
+   const response = await postApi("/api/admin/stores", payload, {
+    headers: {
+     Authorization: `Bearer ${token}`,
+     role: role,
+    },
+   });
+   if (response.success) {
+    toast.success("Store created successfully");
+    setStoreData({
+     storeName: "",
+     ownerName: "",
+     phone: "",
+     email: "",
+     password: "",
+     confirmPassword: "",
+    });
+    //   router.push("/admin/stores");
+   } else {
+    toast.error("Failed to create store");
+   }
+  } catch (error) {
+   console.error("Store creation error:", error);
+   toast.error("Something went wrong while creating the store");
+  }
+  setLoading(false);
+ };
+
  return (
   <>
-   <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start ">
-    {/* Image */}
-    <div className="relative w-full h-[330px] border border-zinc-800 rounded-[20px] flex items-center justify-center overflow-hidden">
-     <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-     <div className="absolute top-2 right-2 bg-white rounded-full h-9 w-9 flex justify-center items-center cursor-pointer shadow" onClick={handlePencilClick}>
-      <Pencil />
+   <form onSubmit={handleSubmit}>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start ">
+     <div className="relative w-full h-[350px] border border-zinc-800 rounded-[20px] flex items-center justify-center overflow-hidden">
+      <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+      <div className="absolute top-2 right-2 bg-white rounded-full h-9 w-9 flex justify-center items-center cursor-pointer shadow" onClick={handlePencilClick}>
+       <Pencil />
+      </div>
+
+    {previewImage ? (
+  <Image
+    src={previewImage}
+    alt="Preview"
+    className="object-fit"
+    fill 
+  />
+) : (
+  <span className="text-sm text-zinc-500">No image selected</span>
+)}
      </div>
 
-     {previewImage ? <Image src={previewImage} alt="Preview" className="object-cover w-full h-full" /> : <span className="text-sm text-zinc-500">No image selected</span>}
+     <div className="grid grid-cols-1 gap-y-4 md:col-span-1 self-start ">
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Store Name</label>
+       <input name="storeName" placeholder="Enchanted Fragrances" className="w-full text-white py-[14px] px-5 bg-neutral-800 rounded-lg" value={storeData.storeName} onChange={handleInputChange} />
+      </div>
+
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Phone Number</label>
+       <input name="phone" placeholder="Richard Thompson" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.phone} onChange={handleInputChange} />
+      </div>
+
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Create Password</label>
+       <input name="password" placeholder="********" type="password" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.password} onChange={handleInputChange} />
+      </div>
+     </div>
+
+     <div className="grid grid-cols-1 gap-y-4 md:col-span-1 self-start ">
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Owner Name</label>
+       <input name="ownerName" placeholder="Richard Thompson" className="w-full text-white py-[14px] px-5 bg-neutral-800 rounded-lg" value={storeData.ownerName} onChange={handleInputChange} />
+      </div>
+
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Email Address</label>
+       <input name="email" placeholder="noah.thompson@example.com" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.email} onChange={handleInputChange} />
+      </div>
+
+      <div className="max-h-fit">
+       <label className="text-[#797A7C] text-sm mb-1 block">Confirm Password</label>
+       <input name="confirmPassword" placeholder="********" type="password" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.confirmPassword} onChange={handleInputChange} />
+      </div>
+     </div>
     </div>
 
-    {/* Form Fields */}
-    <div className="grid grid-cols-1 gap-y-4 md:col-span-1 self-start ">
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Store Name</label>
-      <input placeholder="Enchanted Fragrances" className="w-full text-white py-[14px] px-5 bg-neutral-800 rounded-lg" value={storeData.storeName} onChange={(e) => setStoreData({ ...storeData, storeName: e.target.value })} />
-     </div>
-
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Phone Number</label>
-      <input placeholder="+1 254 2547 2369" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.phone} onChange={(e) => setStoreData({ ...storeData, phone: e.target.value })} />
-     </div>
-
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Create Password</label>
-      <input placeholder="........" type="password" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.password} onChange={(e) => setStoreData({ ...storeData, password: e.target.value })} />
-     </div>
+    <div className="mt-10">
+     <button type="submit" className="w-full py-4 bg-[#EEC584] text-black rounded-3xl text-lg font-medium cursor-pointer">
+      Create Store
+     </button>
     </div>
-
-    <div className="grid grid-cols-1 gap-y-4 md:col-span-1 self-start ">
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Owner Name</label>
-      <input placeholder="Richard Thompson" className="w-full text-white py-[14px] px-5 bg-neutral-800 rounded-lg" value={storeData.storeName} onChange={(e) => setStoreData({ ...storeData, storeName: e.target.value })} />
-     </div>
-
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Email Address</label>
-      <input placeholder="noah.thompson@example.com" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.phone} onChange={(e) => setStoreData({ ...storeData, phone: e.target.value })} />
-     </div>
-
-     <div className="max-h-fit">
-      <label className="text-[#797A7C] text-sm mb-1 block">Confirm Password</label>
-      <input placeholder="........" type="password" className="w-full bg-neutral-800 text-white rounded-md p-3" value={storeData.password} onChange={(e) => setStoreData({ ...storeData, password: e.target.value })} />
-     </div>
-    </div>
-   </div>
-
-   {/* Submit Button */}
-   <div className="mt-10">
-    <button className="w-full py-4 bg-[#EEC584] text-black rounded-3xl text-lg font-medium cursor-pointer">Create Store</button>
-   </div>
+   </form>
   </>
  );
 }

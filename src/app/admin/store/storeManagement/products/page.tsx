@@ -5,6 +5,7 @@ import React from 'react'
 
 const products = [
     {
+      id: "1",
         image: "/products.svg",
         name: "Enchanted Oud",
         price: "د.إ 91.99",
@@ -12,6 +13,7 @@ const products = [
         reviews: 120,
     },
     {
+      id: "2",
         image: "/productTwo.svg",
         name: "Enchanted Oud",
         price: "د.إ 91.99",
@@ -19,6 +21,7 @@ const products = [
         reviews: 120,
     },
     {
+      id: "3",
       image: "/productThree.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -26,6 +29,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "4",
       image: "/productFour.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -33,6 +37,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "5",
       image: "/productThree.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -40,6 +45,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "6",
       image: "/productFive.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -47,6 +53,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "7",
       image: "/productSix.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -54,6 +61,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "8",
       image: "/productTwo.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -61,6 +69,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "9",
       image: "/productSeven.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -68,6 +77,7 @@ const products = [
       reviews: 120,
     },
     {
+      id: "10",
       image: "/productSix.svg",
       name: "Enchanted Oud",
       price: "د.إ 91.99",
@@ -81,7 +91,7 @@ const products = [
     
   return (
     <>
-    <ProductGrid products={products} showRating={true} />;
+    <ProductGrid products={products} showRating={true} />
 
       <div className="w-full flex justify-end mt-[20px]">
          <div className="flex justify-end">

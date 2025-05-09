@@ -1,10 +1,15 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CustomTable from "@/app/(auth)/components/Table";
 import { useRouter } from "next/navigation";
 // import StyledPagination from "@/app/(auth)/components/Pagenation";
 import Link from "next/link";
+import { useSearchParams } from 'next/navigation'
+import { getApi } from "@/utils/api";
+import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+
 
 const userStats = [
  { title: "Products purchased", count: "19", icon: "/storeProduct.svg" },
@@ -20,6 +25,13 @@ interface Column {
  key: string;
  align?: AlignType;
 }
+
+interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+  }
 
 const columns: Column[] = [
  { label: "Sr No.", key: "srno" },
@@ -144,11 +156,60 @@ const data = [
 
 const Page = () => {
  const router = useRouter();
+ const searchParams = useSearchParams()
+ const id = searchParams.get('id')
+ const [userData, setUserData] = useState<User | null>(null)
+ const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const { data: session, status } = useSession();
+
+
+  const hasFetchedRef = useRef(false)
+
+  useEffect(() => {
+    if (status !== "authenticated") return; 
+    if (!id ) return;
+  
+    hasFetchedRef.current = true;
+  
+    const fetchUser = async () => {
+      setLoading(true);
+      const token = session?.accessToken;
+      const role = session?.user?.role;
+  
+      try {
+        const response = await getApi(`/api/admin/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            role: role,
+          },
+        });
+  
+        if (response.success) {
+          toast.success('User fetched successfully');
+          const data = response?.data?.data
+          setUserData(data);
+        } else {
+          toast.error('Failed to fetch user');
+        }
+      } catch (err) {
+        console.error('Failed to fetch user:', err);
+        toast.error('Failed to load user data');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchUser();
+  }, [id, status]);
+  
+
+ console.log('User ID:', id)
 
  return (
   <>
    <div className="flex justify-end">
-    <div onClick={() => router.push("/admin/user/singleUser/products")} className="px-[16px] py-[8px] bg-[#EEC584] rounded-[30px] inline-flex justify-center items-center cursor-pointer">
+    <div onClick={() => router.push(`/admin/user/singleUser/products?id=${id}`)} className="px-[16px] py-[8px] bg-[#EEC584] rounded-[30px] inline-flex justify-center items-center cursor-pointer">
      <div className="justify-start text-black text-sm font-normal">View uploaded products</div>
     </div>
    </div>
@@ -164,25 +225,25 @@ const Page = () => {
       {/* First Name */}
       <div className="flex flex-col gap-[8px]">
        <span className="justify-center text-[#797A7C] text-sm font-normal">First name</span>
-       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">Richard</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">{userData &&userData?.firstName}</span>
       </div>
 
       {/* Last Name */}
       <div className="flex flex-col gap-[8px]">
        <span className="justify-center text-[#797A7C] text-sm font-normal">Last name</span>
-       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">Thompson</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">{userData &&userData?.lastName}</span>
       </div>
 
       {/* Phone Number */}
       <div className="flex flex-col gap-[8px]">
        <span className="justify-center text-[#797A7C] text-sm font-normal">Phone number</span>
-       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">+1 254 458 6985</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">{userData &&userData?.phoneNumber}</span>
       </div>
 
       {/* Email Address */}
       <div className="flex flex-col gap-[8px]">
        <span className="justify-center text-[#797A7C] text-sm font-normal">Email address</span>
-       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">noah.thompson@example.com</span>
+       <span className="justify-start text-[#D1D1D1] xl:text-xl lg:text-md text-md font-medium">{userData &&userData?.email}</span>
       </div>
      </div>
 

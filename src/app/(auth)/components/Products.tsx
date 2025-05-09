@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import Link from 'next/link';
 // import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 interface Product {
+  id: string;
  image: string;
  name: string;
  price: string | number;
@@ -17,9 +19,10 @@ interface Product {
 interface ProductGridProps {
  products: Product[];
  showRating?: boolean;
+ id?: string;
 }
 
-export default function ProductGrid({ products, showRating = true }: ProductGridProps) {
+export default function ProductGrid({ products, showRating = true, id }: ProductGridProps) {
  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 //  function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
@@ -36,8 +39,11 @@ function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEve
   <>
    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8  gap-[17px]">
     {products.map((product, index) => (
-     <div key={index} className="max-w-fit">
-      <div className="relative">
+ <Link
+            key={index}
+            href={`/admin/user/singleUser/products/singleProduct?id=${product.id}`}
+            className="group max-w-fit relative"
+          >            <div className="relative cursor-pointer">
        <Image src={product.image} alt={`${product.name} Image`} width={245} height={245} className="object-cover rounded-[20px]" />
 
        <button onClick={() => setIsDialogOpen(true)} className="absolute cursor-pointer top-2.5 right-2.5">
@@ -60,7 +66,7 @@ function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEve
         )}
        </div>
       </div>
-     </div>
+     </Link>
     ))}
    </div>
 

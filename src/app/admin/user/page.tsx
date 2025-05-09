@@ -53,9 +53,9 @@ const Page = () => {
           },
         });
   
-        const fetchedUsers = response.data?.users || [];
+        const fetchedUsers = response.data?.data?.users || [];
         setUsers(fetchedUsers);
-        setTotalUsers(response.data?.total || 0);
+        setTotalUsers(response.data?.data?.total || 0);
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
@@ -66,7 +66,7 @@ const Page = () => {
 
   const handleSearch = (query: string) => {
     setSearch(query);
-    setPage(1); // Reset to first page on new search
+    setPage(1); 
   };
 
   const handlePageChange = (newPage: number) => {
@@ -81,7 +81,7 @@ const Page = () => {
     srno: (page - 1) * limit + index + 1,
     nameofuser: user.firstName + " " + user.lastName,
     email: user.email,
-    lastpurchase: user.lastPurchaseDate || "N/A", // add this field in your backend if needed
+    lastpurchase: user.lastPurchaseDate || "N/A", 
     action: (
       <Image
         src="/view.svg"
