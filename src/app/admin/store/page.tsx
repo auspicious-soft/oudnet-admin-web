@@ -218,7 +218,7 @@ const Page = () => {
    </div>
 
    <div>
-    <CustomTable columns={columns} data={tableData} />
+    <CustomTable columns={columns} data={data} />
    </div>
 
    <div className="w-full flex justify-end mt-[20px]">
