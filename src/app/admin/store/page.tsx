@@ -1,12 +1,11 @@
+
 "use client";
 import CustomTable from "@/app/(auth)/components/Table";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SearchBar from "../components/header-top-bar/searchBar";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
-import { getApi } from "@/utils/api";
-import { useSession } from "next-auth/react";
 // import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 type AlignType = "left" | "right";
@@ -150,82 +149,78 @@ const data = [
 ];
 
 const Page = () => {
- const [storeData, setStoreData] = useState<any[]>([]);
- const [filteredData, setFilteredData] = useState<any[]>([]);
- const [page, setPage] = useState(1);
- const [totalStores, setTotalStores] = useState(0);
- const { data: session, status } = useSession();
 
- useEffect(() => {
-  if (status !== "authenticated") return;
-
-  const token = session?.accessToken;
-  const role = session?.user?.role;
-
-  const fetchStores = async () => {
-   try {
-    const res = await getApi(`/api/admin/stores`, {
-     headers: {
-      Authorization: `Bearer ${token}`,
-      role: role,
-     },
-    });
-    const apiData = res.data;
-      setStoreData(apiData.stores);
-      setFilteredData(apiData.stores);
-      setTotalStores(apiData.total);
-   } catch (err) {
-    console.error("Failed to fetch stores", err);
-   }
+const [filteredData, setFilteredData] = useState(data); // State for filtered data
+const handleSearch = (query: string) => {
+    const lowerCaseQuery = query.toLowerCase();
+    if (!query) {
+      setFilteredData(data);
+      return;
+    }
+    const filtered = data.filter((item) =>
+      item.nameofstore.toLowerCase().includes(lowerCaseQuery)
+    );
+    setFilteredData(filtered);
   };
 
-  fetchStores();
- }, []);
 
- const handleSearch = (query: string) => {
-  const lowerCaseQuery = query.toLowerCase();
-  if (!query) {
-   setFilteredData(data);
-   return;
-  }
-  const filtered = data.filter((item) => item.nameofstore.toLowerCase().includes(lowerCaseQuery));
-  setFilteredData(filtered);
- };
-
- const handleViewClick = (userId: string) => {
+const handleViewClick = (userId: string) => {
   router.push(`/admin/store/storeManagement`);
- };
+};
+
 
  const tableData = filteredData.map((item) => ({
-  ...item,
-  action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" onClick={() => handleViewClick(item.id)} />,
- }));
- const router = useRouter();
+    ...item,
+    action: (
+      <Image
+        src="/view.svg"
+        alt="view"
+        width={28}
+        height={28}
+        className="ml-auto block cursor-pointer"
+        onClick={() => handleViewClick(item.id)}
+      />
+    ),
+  }));
+  const router = useRouter();
 
- const handleClick = () => {
-  router.push("/admin/store/addStore");
- };
+  const handleClick = () => {
+    router.push('/admin/store/addStore');
+  };
  return (
   <>
    <div className="flex justify-end gap-[10px]">
-    <SearchBar onSearch={handleSearch} />
+    <SearchBar onSearch={handleSearch}  />
 
-    <button onClick={handleClick} className="!px-4 !py-0 bg-[#EEC584] !rounded-[30px] h-10 flex justify-center items-center gap-2.5 cursor-pointer">
+    <button
+    onClick={handleClick}
+    className="!px-4 !py-0 bg-[#EEC584] !rounded-[30px] h-10 flex justify-center items-center gap-2.5 cursor-pointer">
      <Plus size={16} />
      {/* <div className="justify-start text-black text-sm font-normal  ">Add New Store</div> */}
-     <div className="cursor-pointer justify-start text-black text-sm font-normal">Add New Store</div>
+     <div
+    
+      className="cursor-pointer justify-start text-black text-sm font-normal"
+    >
+      Add New Store
+    </div>
     </button>
    </div>
 
    <div>
-    <CustomTable columns={columns} data={data} />
+    <CustomTable columns={columns} data={tableData} />
    </div>
 
+  
    <div className="w-full flex justify-end mt-[20px]">
-    <div className="flex justify-end">{/* <StyledPagination /> */}</div>
-   </div>
+  <div className="flex justify-end">
+    {/* <StyledPagination /> */}
+  </div>
+</div>
+
   </>
  );
 };
 
 export default Page;
+
+
