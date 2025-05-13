@@ -48,9 +48,8 @@ export default function CreateStoreForm() {
   e.preventDefault();
   if (status !== "authenticated") return;
 
-  console.log("clicked");
   if (storeData.password !== storeData.confirmPassword) {
-   toast.error("Passwords do not match");
+   console.error("Passwords do not match");
    return;
   }
   setLoading(true);
@@ -73,7 +72,7 @@ export default function CreateStoreForm() {
     },
    });
    if (response.success) {
-    toast.success("Store created successfully");
+    console.log("Store created successfully");
     setStoreData({
      storeName: "",
      ownerName: "",
@@ -82,9 +81,9 @@ export default function CreateStoreForm() {
      password: "",
      confirmPassword: "",
     });
-    //   router.push("/admin/stores");
+      router.push("/admin/store");
    } else {
-    toast.error("Failed to create store");
+    console.log("Failed to create store");
    }
   } catch (error) {
    console.error("Store creation error:", error);

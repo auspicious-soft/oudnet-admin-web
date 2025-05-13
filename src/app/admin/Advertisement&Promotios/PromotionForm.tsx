@@ -1,20 +1,36 @@
 "use client";
-import { useState } from "react";
+import { getApi, postApi, putApi } from "@/utils/api";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type PromotionFormProps = {
   mode?: "add" | "edit";
   defaultValues?: {
+    _id?: string;
     title?: string;
     store?: string;
     image?: string;
+    storeId?: string;
   };
+  onClose?: () => void;
 };
 
-const PromotionForm = ({ mode = "add", defaultValues }: PromotionFormProps) => {
+type StoreItem = {
+  _id: string;
+  storeName: string;
+  rating: string;
+  Productslisted: string;
+  Productssold: string;
+};
+
+const PromotionForm = ({ mode = "add", defaultValues, onClose }: PromotionFormProps) => {
   const [title, setTitle] = useState(defaultValues?.title || "");
   const [selectedStore, setSelectedStore] = useState(defaultValues?.store || "");
-  const [stores] = useState(["Store A", "Store B", "Store C"]);
   const [image, setImage] = useState<string | null>(defaultValues?.image || null);
+  const [storeData, setStoreData] = useState<StoreItem[]>([]);
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,7 +39,92 @@ const PromotionForm = ({ mode = "add", defaultValues }: PromotionFormProps) => {
     }
   };
 
+   useEffect(() => {
+  if (status !== "authenticated") return;
+
+  const fetchStores = async () => {
+    try {
+      const token = session?.accessToken;
+      const role = session?.user?.role;
+
+      if (!token || !role) {
+        console.warn("Token or role is missing from session");
+        return;
+      }
+
+      const response = await getApi(`/api/admin/stores`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          role: role,
+        },
+      });
+
+      const fetchedStores = response.data?.data?.stores || [];
+      setStoreData(fetchedStores);
+
+      // ✅ Set selected store in edit mode after storeData is available
+      if (mode === "edit" && defaultValues?.storeId) {
+        const match = fetchedStores.find(
+          (store: StoreItem) => store._id === defaultValues.storeId
+        );
+        if (match) {
+          setSelectedStore(match._id);
+        }
+      }
+
+    } catch (error) {
+      console.error("Failed to fetch stores:", error);
+    }
+  };
+
+  fetchStores();
+}, [session, status]);
+
   
+const handleSubmit = async () => {
+  try {
+    const token = session?.accessToken;
+    const role = session?.user?.role;
+
+    if (!token || !role) {
+      console.warn("Missing auth credentials");
+      return;
+    }
+
+    const dummyImageUrl = "https://dummyimage.com/600x400/000/fff&text=Uploaded+Image";
+
+   const storeNamePayload = selectedStore;
+
+    const payload = {
+      title,
+      storeName: storeNamePayload ,
+      banner: dummyImageUrl,
+    };
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      role,
+    };
+
+    let response;
+
+    if (mode === "edit" && defaultValues?._id) {
+      response = await putApi(`/api/admin/promotions/${defaultValues._id}`, payload, { headers });
+    } else {
+      response = await postApi("/api/admin/promotions", payload, { headers });
+    }
+
+    if (response?.success) {
+      console.log(`Promotion ${mode === "edit" ? "updated" : "created"} successfully`);
+      onClose?.();
+    } else {
+      console.error("API call failed", response);
+    }
+  } catch (err) {
+    console.error("Failed to submit promotion:", err);
+  }
+};
+
 
   return (
     <div className="flex flex-col gap-7">
@@ -59,19 +160,23 @@ const PromotionForm = ({ mode = "add", defaultValues }: PromotionFormProps) => {
           className="h-11 bg-zinc-900 rounded-lg text-white text-sm font-['Aeonik_Pro_TRIAL'] w-full"
         >
           <option value="" disabled>Select Store</option>
-          {stores.map((store) => (
-            <option key={store} value={store}>
-              {store}
+          {storeData.map((store) => (
+            <option key={store._id} value={store._id}>
+              {store.storeName}
             </option>
           ))}
         </select>
       </div>
 
-      <button className="w-full py-4 bg-orange-300 rounded-3xl flex justify-center items-center gap-2.5">
-      <span className="text-black text-sm font-['Outreque']">
-      {mode === "edit" ? "Update" : "Send"}
-        </span>
-      </button>
+     <button
+  onClick={handleSubmit}
+  className="w-full py-4 bg-orange-300 rounded-3xl flex justify-center items-center gap-2.5"
+>
+  <span className="text-black text-sm font-['Outreque']">
+    {mode === "edit" ? "Update" : "Send"}
+  </span>
+</button>
+
     </div>
   );
 };

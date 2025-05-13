@@ -6,6 +6,7 @@ import { AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDia
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 
 export interface Promotion {
+   _id?: string; 
  image: string;
  title: string;
  store: string ;
@@ -14,12 +15,21 @@ export interface Promotion {
 interface PromotionGridProps {
  promotions: Promotion[];
  onEdit?: (promo: Promotion) => void;
+  onDelete?: (id: string) => void;
 }
 
-export default function ProductGrid({ promotions,  onEdit }: PromotionGridProps) {
+export default function PromotionGrid({ promotions,  onEdit, onDelete  }: PromotionGridProps) {
  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
- 
+  const handleDeletePromotion = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    if (selectedId && onDelete) {
+      await onDelete(selectedId);
+    }
+    setIsDialogOpen(false);
+    setSelectedId(null);
+  };
 
 function handleDeletePrmotion(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
     event.preventDefault(); 
@@ -27,7 +37,7 @@ function handleDeletePrmotion(event: React.MouseEvent<HTMLButtonElement, MouseEv
     setIsDialogOpen(false);
   }
 
- 
+
 
  return (
   <>
@@ -48,9 +58,9 @@ function handleDeletePrmotion(event: React.MouseEvent<HTMLButtonElement, MouseEv
               />
               <button
                 className="absolute top-2.5 right-2.5"
-                // prevent triggering edit if you want delete instead:
                 onClick={(e) => {
                   e.stopPropagation();
+                   setSelectedId(promotion._id || null);
                   setIsDialogOpen(true);
                 }}
               >
@@ -79,7 +89,12 @@ function handleDeletePrmotion(event: React.MouseEvent<HTMLButtonElement, MouseEv
       Cancel
       </Button>
 
-      <Button variant="destructive" className="w-full sm:w-auto lg:px-[94px] lg:py-[18px] px-[40px] py-[15px] bg-[#FF0000] text-[#D1D1D1] rounded-lg outline-1 outline-offset-[-1px] outline-zinc-800 cursor-pointer" onClick={handleDeletePrmotion}>
+      <Button
+       variant="destructive"
+        className="w-full sm:w-auto lg:px-[94px] lg:py-[18px] px-[40px] py-[15px] bg-[#FF0000] text-[#D1D1D1] rounded-lg outline-1 outline-offset-[-1px] outline-zinc-800 cursor-pointer"
+        onClick={handleDeletePromotion}
+
+        >
       Delete
       </Button>
 
