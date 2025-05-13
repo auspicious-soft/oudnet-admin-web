@@ -48,7 +48,7 @@ const SingleStore = () => {
  const router = useRouter();
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
-
+const [products, setProducts] = useState([]);
  const [isDialogOpen, setIsDialogOpen] = useState(false);
  const [singleStoreData, setSingleStoreData] = useState<Store | null>(null)
  const [loading, setLoading] = useState(true)
@@ -96,160 +96,64 @@ const handleClick = () =>{
       };
     
       fetchStore();
+
+
+      const fetchStoreProducts = async () => {
+  try {
+    const token = session?.accessToken;
+    const role = session?.user?.role;
+
+    const res = await getApi(`/api/admin/stores/${id}/products`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        role: role,
+      },
+    });
+
+    if (res.success) {
+      const data = res?.data?.data?.products
+      console.log("data,",data)
+      setProducts(data); // adjust this if nested under `data`
+    } else {
+      toast.error("Failed to fetch products");
+    }
+  } catch (error) {
+    console.error("Product fetch failed:", error);
+    toast.error("Failed to load store products");
+  } finally {
+    setLoading(false);
+  }
+};
+
+fetchStoreProducts();
+
+
     }, [id, status]);
  
-const data = [
- {
-  srno: 1,
-  Purchasedfrom: "Oud Emporium",
-  Dateofpurchase: "March 15, 2023",
-  rating: "4.2",
-  amount: "د.إ 45.67",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 2,
-  Purchasedfrom: "The Fragrant Oasis",
-  Dateofpurchase: "April 22, 2023",
-  rating: "4.2",
-  amount: "د.إ 82.34",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 3,
-  Purchasedfrom: "Scented Treasures",
-  Dateofpurchase: "May 30, 2023",
-  rating: "4.2",
-  amount: "د.إ 120.89",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 4,
-  Purchasedfrom: "Oud Emporium",
-  Dateofpurchase: "March 15, 2023",
-  rating: "4.2",
-  amount: "د.إ 45.67",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 5,
-  Purchasedfrom: "The Fragrant Oasis",
-  Dateofpurchase: "April 22, 2023",
-  rating: "4.2",
-  amount: "82.34",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 6,
-  Purchasedfrom: "Scented Treasures",
-  Dateofpurchase: "May 30, 2023",
-  rating: "4.2",
-  amount: "د.إ 120.89",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 7,
-  Purchasedfrom: "Oud Haven",
-  Dateofpurchase: "June 10, 2023",
-  rating: "4.2",
-  amount: "د.إ 210.50",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 8,
-  Purchasedfrom: "Essence of Oud",
-  Dateofpurchase: "July 5, 2023",
-  rating: "4.2",
-  amount: "د.إ 12.99",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 9,
-  Purchasedfrom: "Oud Boutique",
-  Dateofpurchase: "August 18, 2023",
-  rating: "4.2",
-  amount: "د.إ 6.78",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
- {
-  srno: 10,
-  Purchasedfrom: "Mystic Oud Shop",
-  Dateofpurchase: "September 12, 2023",
-  rating: "4.2",
-  amount: "د.إ 155.00",
-  action: <Image
-  src="/view.svg"
-  alt="view"
-  width={28}
-  height={28}
-  className="ml-auto block cursor-pointer"
-  onClick={() =>handleClick()}
-/>,
- },
-];
+
+
+const formattedProducts = products?.map((product: any, index: number) => ({
+  srno: index + 1,
+  Purchasedfrom: product.name,
+  Dateofpurchase: new Date(product.createdAt).toLocaleDateString("en-GB"), // or use "en-US" for MM/DD/YYYY
+  rating: product.rating || "N/A", // Update if you start including ratings
+  amount: `د.إ ${product.priceDetails?.[0]?.price?.toFixed(2) || "0.00"}`, // using first price
+  action: (
+    <Image
+      src="/view.svg"
+      alt="view"
+      width={28}
+      height={28}
+      className="ml-auto block cursor-pointer"
+      onClick={() =>
+        router.push(
+          `/admin/store/storeManagement/singleProduct?productId=${product._id}&id=${id}`
+        )
+      }
+    />
+  ),
+}));
+
 
  const handleDeleteStore = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
   event.preventDefault();
@@ -373,7 +277,7 @@ const data = [
     <CustomTable
      title="Products Listed"
      columns={columns}
-     data={data}
+     data={formattedProducts}
      action={
       <button onClick={() => router.push("/admin/store/storeManagement/products")} className="!px-4 !py-0 bg-[#EEC584] !rounded-[30px] h-10 flex justify-center items-center gap-2.5 cursor-pointer">
        <div className="justify-start text-black text-sm font-normal">View all products</div>
