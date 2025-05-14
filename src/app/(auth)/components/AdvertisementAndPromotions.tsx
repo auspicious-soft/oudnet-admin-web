@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 
 export interface Promotion {
    _id?: string; 
@@ -21,23 +22,22 @@ interface PromotionGridProps {
 export default function PromotionGrid({ promotions,  onEdit, onDelete  }: PromotionGridProps) {
  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleDeletePromotion = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    setLoading(true);
     if (selectedId && onDelete) {
       await onDelete(selectedId);
     }
     setIsDialogOpen(false);
     setSelectedId(null);
+    setLoading(false);
   };
 
-function handleDeletePrmotion(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-    event.preventDefault(); 
-    console.log("Promotion deleted successfully");
-    setIsDialogOpen(false);
+  if (loading) {
+    return <ReusableLoader/>;
   }
-
-
 
  return (
   <>

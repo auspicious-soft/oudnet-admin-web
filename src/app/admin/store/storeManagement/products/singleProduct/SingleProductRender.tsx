@@ -48,7 +48,7 @@ const SingleProductRender = () => {
       const role = session?.user?.role;
   
       try {
-        const response = await getApi(`/api/admin/user-products/${id}`, {
+        const response = await getApi(`/api/admin/store-products/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             role: role,
@@ -92,7 +92,7 @@ const handleDelete = async () => {
       const token = session?.accessToken;
       const role = session?.user?.role;
   try {
-    const response = await deleteApi(`/api/admin/user-products/${id}`,{
+    const response = await deleteApi(`/api/admin/store-products/${id}`,{
       headers: {
         Authorization: `Bearer ${token}`,
         role: role,
@@ -101,17 +101,17 @@ const handleDelete = async () => {
     if (response.success) {
       console.log("Product deleted successfully");
       toast.success("Product deleted successfully");
-      router.push(`/admin/user/singleUser/products?id=${id}`);
+      router.push(`/admin/store/storeManagement/products?id=${id}`);
     } else {
       toast.error("Failed to delete product");
-        router.push(`/admin/user/singleUser/products?id=${id}`);
+        router.push(`/admin/store/storeManagement/products?id=${id}`);
     }
   } catch (err) {
     console.error("Error deleting product:", err);
     toast.error("Something went wrong");
   } finally {
     setIsDialogOpen(false);
-      router.push(`/admin/user/singleUser/products?id=${id}`);
+      router.push(`/admin/store/storeManagement/products?id=${id}`);
       setLoading(false);
   }
 };

@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
@@ -16,6 +17,7 @@ export function NavMain({
  }[];
 }) {
  const pathname = usePathname();
+ const router = useRouter();
 
  return (
   <SidebarGroup className="p-0 bg-[#111111] ">
@@ -34,10 +36,17 @@ export function NavMain({
      return (
       <SidebarMenuItem key={item.title} className={isItemActive ? "active" : ""}>
        <SidebarMenuButton asChild tooltip={item.title}>
-        <a href={item.url} className={`dm-sans md:px-[12px] px-[18px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isItemActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"}`}>
+        <Link 
+          href={item.url} 
+          className={`dm-sans md:px-[12px] px-[18px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isItemActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"}`}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(item.url);
+          }}
+        >
          {item.icon && React.createElement(item.icon, { className: "!h-5 !w-5" })}
          <span>{item.title}</span>
-        </a>
+        </Link>
        </SidebarMenuButton>
       </SidebarMenuItem>
      );

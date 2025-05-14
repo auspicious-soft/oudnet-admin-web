@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ProductGrid from "@/app/(auth)/components/Products";
 import StyledPagination from "@/app/(auth)/components/Pagenation";
 import { getApi } from "@/utils/api";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
+import ReusableLoader from "@/components/ui/ReusableLoader";
+import StoreProductGrid from "@/app/(auth)/components/StoreProducts";
 
 const productss = [
     {
@@ -139,9 +140,12 @@ const productss = [
     fetchProducts();
   }, []);
 
+  if(loading){
+    return <ReusableLoader/>
+  }
   return (
     <>
-    <ProductGrid products={products} showRating={true} />
+    <StoreProductGrid products={products} showRating={true} />
 
       <div className="w-full flex justify-end mt-[20px]">
          <div className="flex justify-end">

@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { getApi } from "@/utils/api";
+import ReusableLoader from "@/components/ui/ReusableLoader";
+import { useTransition } from "react";
+
 // import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 type AlignType = "left" | "right";
@@ -161,6 +164,9 @@ const Page = () => {
   const [filteredData, setFilteredData] = useState(data);
   const [storeData, setStoreData] = useState<StoreItem[]>([]);
   const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
+const [navigating, setNavigating] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleSearch = (query: string) => {
     const lowerCaseQuery = query.toLowerCase();
@@ -175,6 +181,7 @@ const Page = () => {
   };
 
   const handleViewClick = (id: string) => {
+    setNavigating(true);
     router.push(`/admin/store/storeManagement?id=${id}`);
   };
 
@@ -182,6 +189,7 @@ const Page = () => {
     if (status != "authenticated") return;
 
     const fetchStores = async () => {
+      setLoading(true);
       try {
         const token = session?.accessToken;
         const role = session?.user?.role;
@@ -202,6 +210,8 @@ const Page = () => {
         console.log(fetchedStores, "fetchedStorssss");
       } catch (error) {
         console.error("Failed to fetch stores:", error);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -228,8 +238,15 @@ const Page = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/admin/store/addStore");
+   startTransition(() => {
+      router.push("/admin/store/addStore");
+    });
   };
+
+
+  if(loading || navigating || isPending){
+    return <ReusableLoader/>
+  }
   return (
     <>
       <div className="flex justify-end gap-[10px]">

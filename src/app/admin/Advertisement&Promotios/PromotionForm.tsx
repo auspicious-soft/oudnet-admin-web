@@ -1,4 +1,5 @@
 "use client";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 import { getApi, postApi, putApi } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -29,6 +30,8 @@ const PromotionForm = ({ mode = "add", defaultValues, onClose }: PromotionFormPr
   const [selectedStore, setSelectedStore] = useState(defaultValues?.store || "");
   const [image, setImage] = useState<string | null>(defaultValues?.image || null);
   const [storeData, setStoreData] = useState<StoreItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [storeLoading, setStoreLoading] = useState(true);
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -43,6 +46,7 @@ const PromotionForm = ({ mode = "add", defaultValues, onClose }: PromotionFormPr
   if (status !== "authenticated") return;
 
   const fetchStores = async () => {
+    setStoreLoading(true);
     try {
       const token = session?.accessToken;
       const role = session?.user?.role;
@@ -75,6 +79,9 @@ const PromotionForm = ({ mode = "add", defaultValues, onClose }: PromotionFormPr
     } catch (error) {
       console.error("Failed to fetch stores:", error);
     }
+    finally {
+      setStoreLoading(false);
+    }
   };
 
   fetchStores();
@@ -82,6 +89,7 @@ const PromotionForm = ({ mode = "add", defaultValues, onClose }: PromotionFormPr
 
   
 const handleSubmit = async () => {
+  setLoading(true);
   try {
     const token = session?.accessToken;
     const role = session?.user?.role;
@@ -123,8 +131,14 @@ const handleSubmit = async () => {
   } catch (err) {
     console.error("Failed to submit promotion:", err);
   }
+  finally {
+    setLoading(false);
+  }
 };
 
+  if (loading || storeLoading) {
+    return <ReusableLoader />;
+  }
 
   return (
     <div className="flex flex-col gap-7">

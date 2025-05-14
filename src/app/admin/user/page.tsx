@@ -7,6 +7,7 @@ import StyledPagination from "@/app/(auth)/components/Pagenation";
 import SearchBar from "../components/header-top-bar/searchBar";
 import { getApi } from "@/utils/api";
 import { useSession } from 'next-auth/react';
+import ReusableLoader from "@/components/ui/ReusableLoader";
 
 type AlignType = "left" | "right";
 
@@ -30,12 +31,14 @@ const Page = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
+    const [loading, setLoading] = useState(true);
+  const [navigating, setNavigating] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
   const { data: session, status } = useSession();
 
   useEffect(() => {
     if (status !== "authenticated") return; 
-  
+    setLoading(true);
     const fetchUsers = async () => {
       try {
         const token = session?.accessToken;
@@ -58,6 +61,8 @@ const Page = () => {
         setTotalUsers(response.data?.data?.total || 0);
       } catch (error) {
         console.error("Failed to fetch users:", error);
+      }finally  {
+        setLoading(false);
       }
     };
   
@@ -74,6 +79,7 @@ const Page = () => {
   };
 
   const handleViewClick = (userId: string) => {
+    setNavigating(true);
     router.push(`/admin/user/singleUser?id=${userId}`);
   };
 
@@ -94,6 +100,9 @@ const Page = () => {
     ),
   }));
 
+  if(loading || navigating){
+    return <ReusableLoader/>
+  }
   return (
     <>
       <div className="flex justify-end gap-[10px]">

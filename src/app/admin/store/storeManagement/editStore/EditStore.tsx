@@ -1,10 +1,11 @@
 "use client";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 import { getApi, putApi } from "@/utils/api";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -97,7 +98,7 @@ const EditStore = () => {
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
     }
-
+      setLoading(true);
     try {
       const response = await putApi(`/api/admin/stores/${id}`, {
         ...rest,
@@ -119,9 +120,14 @@ const EditStore = () => {
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Failed to update store");
+    }finally{
+      setLoading(false);
     }
   };
 
+  if(loading){
+    return <ReusableLoader/>
+  }
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">

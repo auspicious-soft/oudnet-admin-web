@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 // import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 interface Product {
@@ -24,6 +26,8 @@ interface ProductGridProps {
 
 export default function ProductGrid({ products, showRating = true, id }: ProductGridProps) {
  const [isDialogOpen, setIsDialogOpen] = useState(false);
+ const [navigating, setNavigating] = useState(false);
+ const router = useRouter();
 
 //  function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
 //   console.log("Account deletion confirmed");
@@ -35,13 +39,20 @@ function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEve
     setIsDialogOpen(false);
   }
 
+  const handleClick = (id : string) =>{
+    setNavigating(true);
+    router.push(`/admin/user/singleUser/products/singleProduct?id=${id}`);
+  }
+  if(navigating){
+    return <ReusableLoader/>;
+  }
  return (
   <>
    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8  gap-[17px]">
     {products.map((product, index) => (
- <Link
+ <div
             key={index}
-            href={`/admin/user/singleUser/products/singleProduct?id=${product.id}`}
+           onClick={() => handleClick(product.id)}
             className="group max-w-fit relative"
           >            <div className="relative cursor-pointer">
        <Image src={product.image} alt={`${product.name} Image`} width={245} height={245} className="object-cover rounded-[20px]" />
@@ -66,7 +77,7 @@ function handleDeleteAccount(event: React.MouseEvent<HTMLButtonElement, MouseEve
         )}
        </div>
       </div>
-     </Link>
+     </div>
     ))}
    </div>
 

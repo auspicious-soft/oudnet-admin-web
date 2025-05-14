@@ -1,4 +1,5 @@
 "use client";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 import { postApi } from "@/utils/api";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -10,7 +11,8 @@ import { toast } from "react-toastify";
 export default function CreateStoreForm() {
  const fileInputRef = useRef<HTMLInputElement | null>(null);
  const [previewImage, setPreviewImage] = useState<string | null>(null);
- const [loading, setLoading] = useState(true);
+ const [loading, setLoading] = useState(false);
+ const [navigating, setNavigating] = useState(false);
  const { data: session, status } = useSession();
 
  const router = useRouter();
@@ -55,7 +57,7 @@ export default function CreateStoreForm() {
   setLoading(true);
   const token = session?.accessToken;
   const role = session?.user?.role;
-
+  
   try {
    const payload = {
     storeName: storeData.storeName,
@@ -91,6 +93,10 @@ export default function CreateStoreForm() {
   }
   setLoading(false);
  };
+
+ if(loading){
+  return <ReusableLoader/>
+ }
 
  return (
   <>
