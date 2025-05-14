@@ -136,9 +136,10 @@ const handleSubmit = async () => {
   }
 };
 
-  if (loading || storeLoading) {
-    return <ReusableLoader />;
-  }
+if (storeLoading) {
+  return <ReusableLoader />;
+}
+
 
   return (
     <div className="flex flex-col gap-7">

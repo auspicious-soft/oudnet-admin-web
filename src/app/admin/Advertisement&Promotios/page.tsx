@@ -10,6 +10,7 @@ import DialogModal from "@/app/(auth)/components/DialogModal";
 import PromotionForm from "./PromotionForm";
 import { useSession } from "next-auth/react";
 import { deleteApi, getApi } from "@/utils/api";
+import ReusableLoader from "@/components/ui/ReusableLoader";
 
 
 
@@ -20,48 +21,44 @@ const Page = () => {
     null
   );
   const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [loading, setLoading] = useState(true);
   const { data: session, status } = useSession(); // assuming you're using next-auth
   const router = useRouter();
 
- useEffect(() => {
-    if (status !== "authenticated") return;
+const fetchPromotions = async () => {
+  if (status !== "authenticated") return;
+  setLoading(true);
+  try {
+    const token = session?.accessToken;
+    const role = session?.user?.role;
 
-    const fetchPromotions = async () => {
-      try {
-        const token = session?.accessToken;
-        const role = session?.user?.role;
+    const response = await getApi("/api/admin/promotions", {
+      headers: { Authorization: `Bearer ${token}`, role },
+    });
 
-        if (!token || !role) {
-          console.warn("Missing token or role");
-          return;
-        }
+    const fetched = response?.data?.data?.promotions || [];
+    const mappedPromotions: Promotion[] = fetched.map((promo: any) => ({
+      _id: promo._id,
+      image: "/products.svg",
+      title: promo.title,
+      store: promo.storeName?.storeName ?? "Unknown Store",
+    }));
 
-        const response = await getApi("/api/admin/promotions", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            role,
-          },
-        });
+    setPromotions(mappedPromotions);
+  } catch (error) {
+    console.error("Error fetching promotions:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
-        const fetched = response?.data?.data?.promotions || [];
+useEffect(() => {
+  fetchPromotions();
+}, [session, status]);
 
-        const mappedPromotions: Promotion[] = fetched.map((promo: any) => ({
-           _id: promo._id,
-          image:"/products.svg",
-          title: promo.title,
-          store: promo.storeName?.storeName ?? "Unknown Store",
-        }));
-
-        setPromotions(mappedPromotions);
-      } catch (error) {
-        console.error("Error fetching promotions:", error);
-      }
-    };
-
-    fetchPromotions();
-  }, [session, status]);
 
   const fetchSinglePromotion = async (id: string) => {
+    setLoading(true);
   try {
     const token = session?.accessToken;
     const role = session?.user?.role;
@@ -86,6 +83,9 @@ const Page = () => {
     console.error("Error fetching single promotion:", error);
     return null;
   }
+  finally {
+    setLoading(false);
+  }
 };
 
 
@@ -107,7 +107,7 @@ const onEdit = async (promotion: Promotion) => {
 
 
 const handleDelete = async (id: string) => {
-  console.log("clicked")
+  setLoading(true);
   try {
     const token = session?.accessToken;
     const role = session?.user?.role;
@@ -126,7 +126,14 @@ const handleDelete = async (id: string) => {
   } catch (error) {
     console.error("Error deleting promotion:", error);
   }
+  finally {
+    setLoading(false);
+  }
 };
+
+  if (loading) {
+    return <ReusableLoader />;
+  }
 
   return (
     <>
@@ -147,7 +154,7 @@ const handleDelete = async (id: string) => {
       <PromotionGrid promotions={promotions} onEdit={onEdit} onDelete={handleDelete} />;
       <DialogModal
         isOpen={isModalOpen}
-        onClose={() => {
+        onClose={() => {  
           setIsModalOpen(false);
           setMode("add"); 
           setSelectedPromotion(null);
@@ -159,8 +166,10 @@ const handleDelete = async (id: string) => {
         <PromotionForm
           mode={mode}
           defaultValues={selectedPromotion || {}}
-          onClose={() => setIsModalOpen(false)}
-          
+           onClose={() => {
+    setIsModalOpen(false);
+    fetchPromotions(); // ✅ refresh list after close
+  }}
         />
       </DialogModal>
     </>
