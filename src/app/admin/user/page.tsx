@@ -28,7 +28,7 @@ const columns: Column[] = [
 const Page = () => {
   const router = useRouter();
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');  
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
     const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const Page = () => {
           return;
         }
   
-        const response = await getApi(`/api/admin/users`, {
+const response = await getApi(`/api/admin/users?page=${page}&limit=${limit}&description=${search || ''}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             role: role,
@@ -69,7 +69,7 @@ const Page = () => {
     fetchUsers();
   }, [session, status, page, search]);
 
-  const handleSearch = (query: string) => {
+ const handleSearch = (query: string) => {
     setSearch(query);
     setPage(1); 
   };
@@ -106,7 +106,7 @@ const Page = () => {
   return (
     <>
       <div className="flex justify-end gap-[10px]">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} search={search} />
       </div>
 
       <div>

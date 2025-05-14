@@ -10,6 +10,7 @@ import { getApi } from "@/utils/api";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import ReusableLoader from "@/components/ui/ReusableLoader";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 const userStats = [
   { title: "Products purchased", count: "19", icon: "/storeProduct.svg" },
@@ -117,6 +118,9 @@ const SingleUserRender = () => {
   const [navigating, setNavigating] = useState(false);
   const [error, setError] = useState(null);
   const { data: session, status } = useSession();
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 5; // or 10, depending on your design
+
 
   const hasFetchedRef = useRef(false);
 
@@ -172,7 +176,15 @@ const SingleUserRender = () => {
   router.push(`/admin/user/singleUser/products`);
 };
 
-  const tableData = data.map((item) => ({
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+
+const paginatedData = data.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
+
+const tableData = paginatedData.map((item) => ({
   ...item,
   action: (
     <Image
@@ -185,6 +197,7 @@ const SingleUserRender = () => {
     />
   ),
 }));
+
   return (
     <>
       <div className="flex justify-end">
@@ -279,7 +292,14 @@ const SingleUserRender = () => {
       </div>
 
       <div className="w-full flex justify-end mt-[20px]">
-        <div className="flex justify-end">{/* <StyledPagination /> */}</div>
+        <div className="flex justify-end">
+          <StyledPagination
+    currentPage={currentPage}
+    totalItems={data.length}
+    itemsPerPage={itemsPerPage}
+    onPageChange={(page) => setCurrentPage(page)}
+  />
+          </div>
       </div>
     </>
   );

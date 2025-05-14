@@ -9,100 +9,100 @@ import ReusableLoader from "@/components/ui/ReusableLoader";
 import StoreProductGrid from "@/app/(auth)/components/StoreProducts";
 
 const productss = [
-    {
-      id: "1",
-        image: "/products.svg",
-        name: "Enchanted Oud",
-        price: "د.إ 91.99",
-        rating: 4.5,
-        reviews: 120,
-    },
-    {
-      id: "2",
-        image: "/productTwo.svg",
-        name: "Enchanted Oud",
-        price: "د.إ 91.99",
-        rating: 4.5,
-        reviews: 120,
-    },
-    {
-      id: "3",
-      image: "/productThree.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "4",
-      image: "/productFour.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "5",
-      image: "/productThree.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "6",
-      image: "/productFive.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "7",
-      image: "/productSix.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "8",
-      image: "/productTwo.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "9",
-      image: "/productSeven.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    {
-      id: "10",
-      image: "/productSix.svg",
-      name: "Enchanted Oud",
-      price: "د.إ 91.99",
-      rating: 4.5,
-      reviews: 120,
-    },
-    
-  ];
+  {
+    id: "1",
+    image: "/products.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "2",
+    image: "/productTwo.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "3",
+    image: "/productThree.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "4",
+    image: "/productFour.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "5",
+    image: "/productThree.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "6",
+    image: "/productFive.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "7",
+    image: "/productSix.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "8",
+    image: "/productTwo.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "9",
+    image: "/productSeven.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+  {
+    id: "10",
+    image: "/productSix.svg",
+    name: "Enchanted Oud",
+    price: "د.إ 91.99",
+    rating: 4.5,
+    reviews: 120,
+  },
+];
 
- const Page = () => {
-      const [products, setProducts] = useState([]);
+const Page = () => {
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
   const { data: session, status } = useSession();
 
-
-  
   const fetchProducts = async () => {
     try {
       setLoading(true);
-       const token = session?.accessToken;
+      const token = session?.accessToken;
       const role = session?.user?.role;
 
       if (!token || !role) {
@@ -112,9 +112,13 @@ const productss = [
       const res = await getApi("/api/admin/store-products", {
         headers: {
           Authorization: `Bearer ${token}`,
-          role:role,
+          role: role,
         },
-      }); 
+        params: {
+          page,
+          limit,
+        },
+      });
       if (res?.success) {
         const formatted = res?.data?.data?.products.map((p: any) => ({
           id: p._id,
@@ -122,10 +126,15 @@ const productss = [
           name: p.name,
           price: `د.إ ${p.priceDetails?.[0]?.price?.toFixed(2) || "0.00"}`,
           rating: p.rating || "NA",
-          reviews:p.reviews || "NA", 
+          reviews: p.reviews || "NA",
         }));
-
         setProducts(formatted);
+        const total = res?.data?.data.total;
+        const resLimit = res?.data?.data?.limit;
+        const resPage = res?.data?.data?.page;
+        setTotalCount(total);
+        setLimit(resLimit);
+        setPage(resPage);
       } else {
         toast.error("Failed to fetch products");
       }
@@ -140,21 +149,21 @@ const productss = [
     fetchProducts();
   }, []);
 
-  if(loading){
-    return <ReusableLoader/>
+  const totalPages = Math.ceil(totalCount / limit);
+
+  if (loading) {
+    return <ReusableLoader />;
   }
   return (
     <>
-    <StoreProductGrid products={products} showRating={true} />
+      <StoreProductGrid products={products} showRating={true} />
 
       <div className="w-full flex justify-end mt-[20px]">
-         <div className="flex justify-end">
-           {/* <StyledPagination /> */}
-         </div>
-       </div>
+        <div className="flex justify-end">
+ <StyledPagination currentPage={page} totalItems={totalPages} onPageChange={setPage} itemsPerPage={limit}
+ />          </div>
+      </div>
     </>
-  )
-}
+  );
+};
 export default Page;
-
-

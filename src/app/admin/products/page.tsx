@@ -1,11 +1,11 @@
 "use client";
 import CustomTable from "@/app/(auth)/components/Table";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import SearchBar from "../components/header-top-bar/searchBar";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
-// import StyledPagination from "@/app/(auth)/components/Pagenation";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 type AlignType = "left" | "right";
 
@@ -144,24 +144,28 @@ const data = [
   rating: "4.5 stars",
   price: "732",
   id: "user_15",
- },
+},
 ];
 
 const Page = () => {
-
-const [filteredData, setFilteredData] = useState(data); // State for filtered data
-const handleSearch = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
-    if (!query) {
-      setFilteredData(data);
-      return;
-    }
+  
+  const [filteredData, setFilteredData] = useState(data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const router = useRouter();
+  
+const handleSearch = useCallback  ((query: string) => {
+  const lowerCaseQuery = query.toLowerCase();
+  if (!query) {
+    setFilteredData(data);
+  } else {
     const filtered = data.filter((item) =>
       item.nameofproduct.toLowerCase().includes(lowerCaseQuery)
     );
     setFilteredData(filtered);
-  };
-
+  }
+  setCurrentPage(1);
+}, []);
 
 
 const handleViewClick = (userId: string) => {
@@ -182,25 +186,32 @@ router.push(`/admin/products/singleProduct`);
       />
     ),
   }));
-  const router = useRouter();
 
-
+ const paginatedProducts = tableData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
  return (
   <>
    <div className="flex justify-end gap-[10px]">
-    <SearchBar onSearch={handleSearch}  />
+    <SearchBar onSearch={handleSearch}   />
 
   
    </div>
 
    <div>
-    <CustomTable columns={columns} data={tableData} />
+    <CustomTable columns={columns} data={paginatedProducts} />
    </div>
 
   
    <div className="w-full flex justify-end mt-[20px]">
   <div className="flex justify-end">
-    {/* <StyledPagination /> */}
+   <StyledPagination
+            currentPage={currentPage}
+            totalItems={data.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+          />
   </div>
 </div>
 

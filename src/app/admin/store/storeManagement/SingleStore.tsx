@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import CustomTable from "@/app/(auth)/components/Table";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Pencil } from "lucide-react";
-// import StyledPagination from "@/app/(auth)/components/Pagenation";
 import {
   AlertDialogContent,
   AlertDialogDescription,
@@ -18,6 +17,7 @@ import { toast } from "react-toastify";
 import { deleteApi, getApi } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import ReusableLoader from "@/components/ui/ReusableLoader";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 const userStats = [
   { title: "Total Products Listed", count: "1960", icon: "/storeProduct.svg" },
@@ -66,7 +66,9 @@ const SingleStore = () => {
   const [navigating, setNavigating] = useState(true);
   const [error, setError] = useState(null);
   const { data: session, status } = useSession();
-
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
 
   const hasFetchedRef = useRef(false);
 
@@ -117,12 +119,21 @@ const SingleStore = () => {
             Authorization: `Bearer ${token}`,
             role: role,
           },
+          params: {
+            page,
+            limit,
+          },
         });
 
         if (res.success) {
           const data = res?.data?.data?.products;
-          console.log("data,", data);
-          setProducts(data); 
+          const total = res?.data?.data.total;
+          const resLimit = res?.data?.data?.limit;
+          const resPage = res?.data?.data?.page;
+          setProducts(data);
+          setTotalCount(total);
+          setLimit(resLimit);
+          setPage(resPage);
         } else {
           toast.error("Failed to fetch products");
         }
@@ -144,11 +155,14 @@ const SingleStore = () => {
   }, []);
 
   const formattedProducts = products?.map((product: any, index: number) => ({
-    srno: index + 1,
+     srno: (page - 1) * limit + index + 1,
     Purchasedfrom: product.name,
-    Dateofpurchase: new Date(product.createdAt).toLocaleDateString("en-GB"),
-    rating: product.rating || "N/A", 
-    amount: `د.إ ${product.priceDetails?.[0]?.price?.toFixed(2) || "0.00"}`, 
+Dateofpurchase: new Date(product.createdAt).toLocaleDateString("en-GB", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+}),    rating: product.rating || "N/A",
+    amount: `د.إ ${product.priceDetails?.[0]?.price?.toFixed(2) || "0.00"}`,
     action: (
       <Image
         src="/view.svg"
@@ -160,6 +174,7 @@ const SingleStore = () => {
       />
     ),
   }));
+    const totalPages = Math.ceil(totalCount / limit);
 
   const handleDeleteStore = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -200,20 +215,22 @@ const SingleStore = () => {
 
   const handleClick = (productId: string) => {
     setNavigating(true);
-    router.push(`/admin/store/storeManagement/singleProduct?productId=${productId}&id=${id}`);
+    router.push(
+      `/admin/store/storeManagement/singleProduct?productId=${productId}&id=${id}`
+    );
   };
 
-  const handleViewAllProduct = () =>{
+  const handleViewAllProduct = () => {
     setNavigating(true);
     router.push(`/admin/store/storeManagement/products`);
-  }
-  if(loading || navigating){
-    return <ReusableLoader/>
+  };
+  if (loading || navigating) {
+    return <ReusableLoader />;
   }
 
   return (
     <>
-<div className="flex justify-center sm:justify-end gap-[10px] flex-wrap">
+      <div className="flex justify-center sm:justify-end gap-[10px] flex-wrap">
         <button className="!px-4 !py-0 bg-[#EEC584] !rounded-[30px] h-10 flex justify-center items-center gap-2.5 cursor-pointer">
           <Pencil size={16} />
           <div
@@ -344,7 +361,10 @@ const SingleStore = () => {
       </div>
 
       <div className="w-full flex justify-end mt-[20px]">
-        <div className="flex justify-end">{/* <StyledPagination /> */}</div>
+        <div className="flex justify-end">
+          <StyledPagination currentPage={page} totalItems={totalPages} onPageChange={setPage} itemsPerPage={limit}
+           />
+          </div>
       </div>
     </>
   );

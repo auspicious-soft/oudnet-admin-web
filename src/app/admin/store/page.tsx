@@ -9,8 +9,8 @@ import { useSession } from "next-auth/react";
 import { getApi } from "@/utils/api";
 import ReusableLoader from "@/components/ui/ReusableLoader";
 import { useTransition } from "react";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
-// import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 type AlignType = "left" | "right";
 
@@ -165,20 +165,18 @@ const Page = () => {
   const [storeData, setStoreData] = useState<StoreItem[]>([]);
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
-const [navigating, setNavigating] = useState(false);
+  const [navigating, setNavigating] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const router = useRouter();
 
-  const handleSearch = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
-    if (!query) {
-      setFilteredData(data);
-      return;
-    }
-    const filtered = data.filter((item) =>
-      item.nameofstore.toLowerCase().includes(lowerCaseQuery)
-    );
-    setFilteredData(filtered);
-  };
+const handleSearch = (query: string) => {
+  setPage(1);
+  setSearchQuery(query);
+};
 
   const handleViewClick = (id: string) => {
     setNavigating(true);
@@ -199,27 +197,37 @@ const [navigating, setNavigating] = useState(false);
           return;
         }
 
-        const response = await getApi(`/api/admin/stores`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            role: role,
-          },
-        });
+         const response = await getApi(`/api/admin/stores`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          role,
+        },
+        params: {
+          page,
+          limit,
+          description: searchQuery,
+        },
+      });
         const fetchedStores = response.data?.data?.stores || [];
+        const total =  response?.data?.data.total;
+        const resLimit = response?.data?.data?.limit;
+        const resPage  = response?.data?.data?.page;
         setStoreData(fetchedStores);
-        console.log(fetchedStores, "fetchedStorssss");
+         setTotalCount(total);
+         setLimit(resLimit);
+          setPage(resPage);
       } catch (error) {
         console.error("Failed to fetch stores:", error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
 
     fetchStores();
-  }, [session, status]);
+  }, [session, status, page, limit, searchQuery]);
 
-  const tableData = storeData.map((item, index) => ({
-    srno: index + 1,
+    const tableData = storeData.map((item: any, index: number) => ({
+    srno: (page - 1) * limit + index + 1,
     ...item,
     rating: item.rating || "NA",
     Productslisted: item.Productslisted || "NA",
@@ -235,22 +243,23 @@ const [navigating, setNavigating] = useState(false);
       />
     ),
   }));
-  const router = useRouter();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
 
   const handleClick = () => {
-   startTransition(() => {
+    startTransition(() => {
       router.push("/admin/store/addStore");
     });
   };
 
-
-  if(loading || navigating || isPending){
-    return <ReusableLoader/>
+  if (loading || navigating || isPending) {
+    return <ReusableLoader />;
   }
   return (
     <>
       <div className="flex justify-end gap-[10px]">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} search={searchQuery} />
 
         <button
           onClick={handleClick}
@@ -269,7 +278,10 @@ const [navigating, setNavigating] = useState(false);
       </div>
 
       <div className="w-full flex justify-end mt-[20px]">
-        <div className="flex justify-end">{/* <StyledPagination /> */}</div>
+        <div className="flex justify-end">
+          <StyledPagination currentPage={page} totalItems={totalPages} onPageChange={setPage} itemsPerPage={limit}
+ />
+          </div>
       </div>
     </>
   );

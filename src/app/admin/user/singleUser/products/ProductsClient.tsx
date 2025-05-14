@@ -1,5 +1,6 @@
 "use client";
 
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 import ProductGrid from "@/app/(auth)/components/Products";
 import { getApi } from "@/utils/api";
 import { useSession } from "next-auth/react";
@@ -97,6 +98,9 @@ const ProductsClient = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [navigating, setNavigating] = useState(false);
+   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
 
   const { data: session, status } = useSession();
 
@@ -129,7 +133,25 @@ const ProductsClient = () => {
     fetchProducts();
   }, [userId, status]);
 
-  return <ProductGrid products={products} showRating={false} />;
+   const paginatedProducts = products.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  return (
+    <>
+      <ProductGrid products={paginatedProducts} showRating={false} />
+
+      <div className="flex justify-end mt-6">
+        <StyledPagination
+          currentPage={currentPage}
+          totalItems={products.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+    </>
+  );
 };
 
 export default ProductsClient;
