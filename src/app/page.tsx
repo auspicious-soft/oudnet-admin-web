@@ -7,6 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./(auth)/components/AuthLayout";
 import { signIn , useSession } from "next-auth/react";
 import { useEffect } from "react";
+import hidePassword  from "../../public/eye_closed.svg"
+import showwPassword  from "../../public/showPassword.svg"
+
 
 const Page = () => {
  const router = useRouter();
@@ -80,7 +83,7 @@ const Page = () => {
    <div className="flex items-center border border-[#7C7C7C40] rounded-xl  w-full mt-[4px]  gap-3 relative">
     <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} className="input_color  text-base   w-full "  />
     <Image
-     src={showPassword ? "/showPassword.svg" : "/hidePassword.svg"}
+     src={showPassword ? showwPassword : hidePassword}
      alt="Toggle visibility"
      width={24}
      height={24}

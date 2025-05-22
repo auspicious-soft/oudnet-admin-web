@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import React  from "react";
+import React, { useEffect, useState }  from "react";
 import WeeklyStatChart from "../components/weekly-stat-chart/WeeklyStatChart";
 import CustomTable from "@/app/(auth)/components/Table";
-// import StyledPagination from "@/app/(auth)/components/Pagenation";
+import StyledPagination from "@/app/(auth)/components/Pagenation";
 
 const userStats = [
  { title: "Total Users", count: "25,587", icon: "/users.svg" },
@@ -94,30 +94,142 @@ const data = [
     revenueToday: "155.00 د.إ",
     action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
   },
+   {
+    srno: 8,
+    nameofuser: "Robert Johnson",
+    ProductsSoldToday: 23,
+    ProductsSoldThisWeek: 789, 
+    revenueToday: "12.99 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 9,
+    nameofuser: "William Davis",
+    ProductsSoldToday: 99,
+    ProductsSoldThisWeek: 123, 
+    revenueToday: "6.78 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 10,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+   {
+    srno: 11,
+    nameofuser: "Robert Johnson",
+    ProductsSoldToday: 23,
+    ProductsSoldThisWeek: 789, 
+    revenueToday: "12.99 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 12,
+    nameofuser: "William Davis",
+    ProductsSoldToday: 99,
+    ProductsSoldThisWeek: 123, 
+    revenueToday: "6.78 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 13,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+   {
+    srno: 14,
+    nameofuser: "Robert Johnson",
+    ProductsSoldToday: 23,
+    ProductsSoldThisWeek: 789, 
+    revenueToday: "12.99 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 15,
+    nameofuser: "William Davis",
+    ProductsSoldToday: 99,
+    ProductsSoldThisWeek: 123, 
+    revenueToday: "6.78 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 16,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 17,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 18,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
+  {
+    srno: 19,
+    nameofuser: "Michael Jones",
+    ProductsSoldToday: 34,
+    ProductsSoldThisWeek: 456, 
+    revenueToday: "155.00 د.إ",
+    action: <Image src="/view.svg" alt="view" width={28} height={28} className="ml-auto block cursor-pointer" />,
+  },
 ];
 
 
 
 const Page = () => {
+  const [filteredData, setFilteredData] = useState(data);
+   const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+     const tableData = filteredData.map((item) => ({
+    ...item
+  }));
+
+   const paginatedProducts = tableData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+  setCurrentPage(1);
+}, [filteredData]);
  return (
   <>
    {/* top  */}
 
    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[42px]">
     {userStats.map((stat, i) => (
-     <div key={i} className="flex gap-[21px] items-center ">
-      <Image src={stat.icon} alt={stat.title} width={60} height={60} />
-      <div className="flex flex-col gap-[4px]">
-       <div className="text-[#797A7C] xl:text-base text-sm font-normal ">{stat.title}</div>
-       <div className="text-[#D1D1D1] xl:text-4xl text-2xl font-medium">{stat.count}</div>
-      </div>
-     </div>
+     <div key={i} className="flex gap-4 items-center">
+  <Image src={stat.icon} alt={stat.title} width={50} height={50} className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px]" />
+  <div className="flex flex-col gap-[4px]">
+    <div className="text-[#797A7C] text-sm sm:text-base font-normal">{stat.title}</div>
+    <div className="text-[#D1D1D1] text-xl sm:text-2xl xl:text-4xl font-medium">{stat.count}</div>
+  </div>
+</div>
     ))}
    </div>
 
-   <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-0  my-[40px]">
+<div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6 mt-10">
     {/* Left  */}
-    <div className="col-span-2 bg-[#212121] lg:p-[30px] p-[10px] rounded-xl ">
+  <div className="bg-[#212121] p-4 sm:p-6 lg:p-[30px] rounded-xl">
       <WeeklyStatChart 
         selectedYear={2023} 
         data={[]} 
@@ -126,18 +238,28 @@ const Page = () => {
     </div>
 
     {/* Right  */}
-    <div className="bg-[#212121] p-6 rounded-xl mt-[40px] lg:mt-0">
-     <div className="justify-start text-neutral-300 text-xl font-medium ">Top Performing Stores</div>
+  <div className="bg-[#212121] p-4 sm:p-6 rounded-xl">
+     <h2 className="text-neutral-300 text-lg sm:text-xl font-medium mb-6">
+      Top Performing Stores
+    </h2>
 
-     <div className="flex flex-col gap-[10px] mt-[30px]">
+      <div className="flex flex-col gap-4">
       {topStores.map((store, i) => (
-       <div key={i} className="flex items-center gap-[10px] rounded-lg  ">
-        <Image src={store.logo} alt={store.name} width={84} height={60} />
-        <div className="flex flex-col gap-1 py-[10px]">
-         <div className="text-[#D1D1D1] xl:text-xl text-lg font-medium">{store.name}</div>
-         <div className="text-[#797A7C] text-xs font-normal">{store.sales}</div>
-        </div>
-       </div>
+        <div key={i} className="flex items-center gap-3 sm:gap-4">
+  <Image 
+  src={store.logo} 
+  alt={store.name} 
+  width={70} 
+  height={50} 
+   className="w-[70px] sm:w-[84px] h-auto"
+    />
+          <div className="flex flex-col">
+                <div className="text-[#D1D1D1] text-base sm:text-lg font-medium">{store.name}</div>
+
+     <div className="text-[#797A7C] text-xs sm:text-sm">{store.sales}</div>
+  </div>
+</div>
+
       ))}
      </div>
     </div>
@@ -146,12 +268,17 @@ const Page = () => {
 
    {/* table  */}
 <div>
-      <CustomTable title="Orders" columns={columns} data={data} />
+      <CustomTable title="Orders" columns={columns} data={paginatedProducts} />
     </div>
 
   <div className="w-full flex justify-end mt-[20px]">
   <div className="flex justify-end">
-    {/* <StyledPagination  /> */}
+    <StyledPagination
+                  currentPage={currentPage}
+                  totalItems={data.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                />
   </div>
 </div>
   </>

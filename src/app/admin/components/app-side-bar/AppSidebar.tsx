@@ -80,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuButton asChild tooltip="Logout">
             <button
               onClick={handleLogout}
-              className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isLogoutActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"} w-full`}
+              className={`dm-sans px-[12px] py-[10px] h-full hover:!bg-[#EEC584] hover:!text-[#000000] text-[#ABABAB] flex items-center gap-2 ${isLogoutActive ? "bg-[#EEC584] !text-[#000000]" : "font-normal"} w-full cursor-pointer`}
             >
               <Logout />
               <span>Logout</span>
